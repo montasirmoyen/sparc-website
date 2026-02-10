@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <div className="flex flex-col gap-10 py-6">
@@ -15,12 +17,14 @@ export default function Home() {
             interested in research and real-world applications.
           </p>
         </div>
-        <div className="h-56 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 text-xs text-zinc-500 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 md:h-64">
+        <div className="relative h-56 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 md:h-64">
           {/* Replace this with a real club hero image from /public */}
-          <div className="flex h-full items-center justify-center px-6 text-center">
-            Hero image placeholder – use a SPARC or Suffolk campus image from
-            /public.
-          </div>
+          <Image
+            src="/sparc-1.jpg"
+            alt="SPARC Hero Image"
+            fill
+            className="rounded-2xl object-cover"
+          />
         </div>
       </section>
 

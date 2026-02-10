@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -61,12 +62,14 @@ export default function AboutPage() {
           </CardContent>
         </Card>
 
-        <div className="h-52 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 text-xs text-zinc-500 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 md:h-full">
-          {/* Replace with a real photo from /public, e.g. /about-sparc.jpg */}
-          <div className="flex h-full items-center justify-center px-5 text-center">
-            Image placeholder for a club photo or Suffolk campus shot. Put the final image in
-            /public and update the src.
-          </div>
+        <div className="relative h-56 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 md:h-64">
+          {/* Replace this with a real club hero image from /public */}
+          <Image
+            src="/sparc-3.jpg"
+            alt="SPARC Hero Image"
+            fill
+            className="rounded-2xl object-cover"
+          />
         </div>
       </section>
     </div>

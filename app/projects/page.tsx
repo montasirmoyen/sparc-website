@@ -11,25 +11,25 @@ import { Button } from "@/components/ui/button";
 export default function ProjectsPage() {
   const projects = [
     {
-      name: "Placeholder Project 1",
-      status: "In Progress",
-      timeframe: "Fall 2026",
+      name: "Smart Campus Navigator & Club Finder",
+      status: "Completed",
+      timeframe: "Spring 2025",
       description:
-        "High-level description of a current SPARC project. Mention goals, technologies, and what members are learning.",
+        "Our first ever group project focused on creating a smart campus navigation system and club finder to enhance student experience.",
     },
     {
-      name: "Placeholder Project 2",
+      name: "CollegiateX Internship",
       status: "Completed",
+      timeframe: "Fall 2025",
+      description:
+        "In the fall 2025, Mohammed, the president of SPARC, collaborated with CollegiateX and granted everyone at the club an internship to build their mobile app.",
+    },
+    {
+      name: "SPARC Website",
+      status: "Idea / Proposal",
       timeframe: "Spring 2026",
       description:
-        "Short description of a completed project with an emphasis on impact, demo, or research outcome.",
-    },
-    {
-      name: "Placeholder Project 3",
-      status: "Idea / Proposal",
-      timeframe: "Any semester",
-      description:
-        "A project idea that SPARC may tackle in the future. Useful for recruiting members with specific interests.",
+        "A group of SPARC members is proposing to build and maintain a public website for the club, showcasing our mission, team, projects, and resources for members. This would be a great opportunity to learn web development and create something that represents SPARC to the wider community.",
     },
   ];
 
@@ -43,7 +43,7 @@ export default function ProjectsPage() {
         </p>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-3">
+      <section className="grid gap-2 md:grid-cols-3">
         {projects.map((project) => (
           <Card key={project.name} size="sm">
             <CardHeader className="mb-2 border-b-0 pb-0">

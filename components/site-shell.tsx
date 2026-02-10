@@ -1,0 +1,85 @@
+import Link from "next/link";
+
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+
+export function SiteShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-zinc-50 to-zinc-100 text-zinc-900 dark:from-zinc-950 dark:to-zinc-900 dark:text-zinc-50">
+      <header className="border-b border-zinc-200 bg-white/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/80">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-lg bg-zinc-900 text-sm font-semibold text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900">
+              SP
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-semibold tracking-tight">
+                SPARC
+              </span>
+              <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Suffolk Computing AI Research Club
+              </span>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-1 text-sm font-medium sm:flex">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/about">About</NavLink>
+            <NavLink href="/team">Founders</NavLink>
+            <NavLink href="/events">Events</NavLink>
+            <NavLink href="/projects">Projects</NavLink>
+            <NavLink href="/join">Join</NavLink>
+            <NavLink href="/contact">Contact</NavLink>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              asChild
+              size="sm"
+              className="hidden sm:inline-flex"
+            >
+              <Link href="/join">Apply</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
+        {children}
+      </main>
+
+      <footer className="border-t border-zinc-200 bg-white/80 py-4 text-xs text-zinc-500 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 sm:flex-row sm:px-6 lg:px-8">
+          <p>
+            © {new Date().getFullYear()} Suffolk Computing AI Research Club
+            (SPARC). All rights reserved.
+          </p>
+          <p className="text-[11px]">
+            Suffolk University · Boston, MA · Placeholder contact info
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Button
+      asChild
+      variant="ghost"
+      size="sm"
+      className="px-3 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-50"
+    >
+      <Link href={href}>{children}</Link>
+    </Button>
+  );
+}
+

@@ -44,7 +44,7 @@ export default function TeamPage() {
   return (
     <div className="space-y-8">
       <section className="space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Founding Team</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Team</h1>
         <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           Use this page to recognize the students who created SPARC when it was a small and
           unofficial group. Replace the placeholders below with real names, roles, and stories.

@@ -25,7 +25,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           <nav className="hidden items-center gap-1 text-sm font-medium sm:flex">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/about">About</NavLink>
-            <NavLink href="/team">Founders</NavLink>
+            <NavLink href="/team">Team</NavLink>
             <NavLink href="/events">Events</NavLink>
             <NavLink href="/projects">Projects</NavLink>
             <NavLink href="/join">Join</NavLink>

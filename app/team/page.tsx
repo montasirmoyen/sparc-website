@@ -10,25 +10,19 @@ import {
 
 const founders = [
   {
-    name: "Founder Name 1",
-    role: "Co-founder · Placeholder role",
-    image: "/founder-1.jpg",
+    name: "Mohammed Khodor Firas Al-Tal",
+    role: "President · Computer Science '25",
+    image: "/mo.jpg",
+    website: "https://mohammedkhodoraltal.com/",
     blurb:
       "Short placeholder blurb about this founding member, their background, and why they helped start SPARC.",
   },
   {
-    name: "Founder Name 2",
-    role: "Co-founder · Placeholder role",
-    image: "/founder-2.jpg",
+    name: "Sarmad Shah",
+    role: "Vice-President · Computer Science '25",
+    image: "/sarmad.jpeg",
     blurb:
       "Short placeholder blurb about this founding member, focusing on early meetings and ideas.",
-  },
-  {
-    name: "Founder Name 3",
-    role: "Founding member · Placeholder role",
-    image: "/founder-3.jpg",
-    blurb:
-      "Short placeholder blurb about this founding member and their contributions to the first projects or events.",
   },
 ];
 
@@ -43,18 +37,17 @@ export default function TeamPage() {
         </p>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-3">
+      <section className="grid gap-2 md:grid-cols-3">
         {founders.map((founder) => (
           <Card key={founder.name}>
             <CardHeader className="border-b-0 pb-0">
               <div className="flex items-center gap-3">
-                <div className="relative size-12 overflow-hidden rounded-full border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="relative w-24 h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
                   {/* Replace src with a real image in /public */}
                   <Image
                     src={founder.image}
                     alt={founder.name}
                     fill
-                    sizes="48px"
                     className="object-cover"
                   />
                 </div>

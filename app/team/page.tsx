@@ -59,6 +59,7 @@ export default function TeamPage() {
                 <div className="relative w-24 h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
                   {/* Replace src with a real image in /public */}
                   <Image
+                  unoptimized
                     src={member.image}
                     alt={member.name}
                     fill

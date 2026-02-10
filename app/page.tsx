@@ -20,6 +20,7 @@ export default function Home() {
         <div className="relative h-56 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 md:h-64">
           {/* Replace this with a real club hero image from /public */}
           <Image
+          unoptimized
             src="/sparc-1.jpg"
             alt="SPARC Hero Image"
             fill

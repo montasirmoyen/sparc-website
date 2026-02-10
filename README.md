@@ -1,1 +1,1 @@
-# 😌sparc-website
+# sparc-website

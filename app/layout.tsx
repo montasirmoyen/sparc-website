@@ -3,7 +3,6 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteShell } from "@/components/site-shell";
-import { ConstellationBackground } from "@/components/constellation-background";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -32,9 +31,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ConstellationBackground>
-            <SiteShell>{children}</SiteShell>
-          </ConstellationBackground>
+          <SiteShell>{children}</SiteShell>
         </ThemeProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteShell } from "@/components/site-shell";
+import { ConstellationBackground } from "@/components/constellation-background";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SiteShell>{children}</SiteShell>
+          <ConstellationBackground>
+            <SiteShell>{children}</SiteShell>
+          </ConstellationBackground>
         </ThemeProvider>
       </body>
     </html>

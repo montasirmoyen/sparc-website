@@ -6,28 +6,38 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Image from "next/image";
 
 export default function ContactPage() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-4">
         <section className="space-y-3">
           <h1 className="text-2xl font-semibold tracking-tight">Contact</h1>
           <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Placeholder overview of how to get in touch with SPARC. Replace the items below with your
-            actual email, Discord, Instagram, or other channels.
+            We&apos;d love to hear from you! Whether you have questions about joining, want to propose a project, or just want to connect, feel free to reach out through any of the channels below. We&apos;re always happy to chat with students, faculty, and anyone interested in learning more about SPARC.
           </p>
         </section>
 
-        <section className="grid gap-6 md:grid-cols-3">
+        <div className="relative h-56 rounded-lg bg-transparent md:h-64">
+          <Image
+            unoptimized
+            src="/sparc-contact.jpeg"
+            alt="SPARC Contact Image"
+            fill
+            className="rounded-2xl object-cover"
+          />
+        </div>
+
+        <section className="grid gap-6 md:grid-cols-2">
           <Card size="sm">
             <CardHeader className="mb-2 border-b-0 pb-0">
               <CardTitle className="text-sm">Email</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              <p>Replace this placeholder with your official club email address.</p>
+              <p>Contact us anytime at our official club email address: sparc@studentorgs.suffolk.edu</p>
               <Button asChild size="sm" variant="outline">
-                <a href="mailto:placeholder@suffolk.edu">Email SPARC</a>
+                <a href="mailto:sparc@studentorgs.suffolk.edu">Email SPARC</a>
               </Button>
             </CardContent>
           </Card>
@@ -38,22 +48,11 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               <p>
-                Use this card to link to your Discord server, Instagram, or any other place members
-                stay connected.
+                We are planning to set up a Discord server soon for community discussions, project collaboration, and event announcements. Stay tuned for an invite link coming soon!
               </p>
               <Button size="sm" variant="outline">
-                Add social or Discord invite link
+                Join Discord
               </Button>
-            </CardContent>
-          </Card>
-
-          <Card size="sm">
-            <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-sm">Faculty / Department</CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              Placeholder text for any faculty advisor details, relevant department contacts, or how
-              staff can reach SPARC.
             </CardContent>
           </Card>
         </section>
@@ -66,8 +65,7 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               <p>
-                Placeholder details for weekly meeting time, room, or building. You can also mention
-                how to stay updated when the schedule changes.
+                We typically hold meetings in person on campus, but we are also open to virtual or hybrid formats depending on member preferences and needs. Our regular meeting times are still being finalized, but we aim to find a schedule that works for as many members as possible. We will share meeting details and locations with members once they join, and we always welcome feedback on how to make our meetings more accessible and convenient for everyone.
               </p>
             </CardContent>
           </Card>

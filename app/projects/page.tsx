@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function ProjectsPage() {
   const projects = [
@@ -35,14 +36,23 @@ export default function ProjectsPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-4">
         <section className="space-y-3">
           <h1 className="text-2xl font-semibold tracking-tight">Projects</h1>
           <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Placeholder overview of SPARC projects. Describe the balance between research,
-            experimentation, and building things that are useful to students or the wider community.
+            Learn about our real world applications, research, and tools built by SPARC members. Our projects are hands-on opportunities to apply machine learning concepts, collaborate with peers, and create impactful solutions. 
           </p>
         </section>
+
+        <div className="relative h-56 rounded-lg bg-transparent md:h-64">
+          <Image
+            unoptimized
+            src="/sparc-projects.jpeg"
+            alt="SPARC Projects Image"
+            fill
+            className="rounded-2xl object-cover"
+          />
+        </div>
 
         <section className="grid gap-2 md:grid-cols-3">
           {projects.map((project) => (
@@ -76,14 +86,12 @@ export default function ProjectsPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               <p>
-                Placeholder instructions for proposing new projects. Describe how you collect ideas
-                (e.g., forms, Discord channels, meetings) and how you decide what to run each
-                semester.
+                We encourage all members to propose project ideas! Whether you have a specific problem you want to solve, a research question you want to explore, or a tool you think would benefit the community, we want to hear about it. To propose a project, simply fill out our project proposal form with your idea, motivation, and any resources or collaborators you have in mind. The SPARC leadership team will review proposals on a rolling basis and provide feedback and support to help bring your project to life.
               </p>
             </CardContent>
             <CardFooter className="justify-start gap-2">
               <Button size="sm" variant="outline">
-                Link to a project proposal form
+                View Form
               </Button>
             </CardFooter>
           </Card>

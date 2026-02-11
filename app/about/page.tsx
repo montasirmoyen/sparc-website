@@ -4,15 +4,23 @@ import Image from "next/image";
 export default function AboutPage() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-4">
         <section className="space-y-3">
           <h1 className="text-2xl font-semibold tracking-tight">About SPARC</h1>
           <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Placeholder about text. Use this page to describe why the Suffolk Computing AI Research
-            Club (SPARC) exists, what makes it unique at Suffolk University, and what kinds of
-            students it&apos;s for.
+            We're a student club at Suffolk University focused on applied machine learning and AI research. Our mission is to advance AI literacy and build real projects, creating a space for research-minded students across majors.
           </p>
         </section>
+
+        <div className="relative h-56 rounded-lg bg-transparent md:h-64">
+          <Image
+            unoptimized
+            src="/sparc-3.jpg"
+            alt="SPARC About Image"
+            fill
+            className="rounded-2xl object-cover"
+          />
+        </div>
 
         <section className="grid gap-6 md:grid-cols-2">
           <Card>
@@ -22,9 +30,7 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                Placeholder for a concise mission statement. Talk about advancing AI literacy,
-                building real projects, and creating a space for research-minded students across
-                majors.
+                We're a student club at Suffolk University focused on applied machine learning and AI research. Our mission is to advance AI literacy and build real projects, creating a space for research-minded students across majors.
               </p>
             </CardContent>
           </Card>
@@ -35,7 +41,6 @@ export default function AboutPage() {
               <CardDescription>What SPARC explores</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-zinc-700 dark:text-zinc-300">
-              <p>Use bullet-style paragraphs to describe things like:</p>
               <ul className="list-disc space-y-1 pl-5">
                 <li>Applied machine learning and generative AI projects.</li>
                 <li>Research reading groups and paper discussions.</li>
@@ -53,25 +58,13 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-2 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
               <p>
-                Placeholder narrative about the origin of the club, early meetings, and the moment it
-                transitioned from unofficial to recognized at Suffolk.
+                SPARC was founded in 2025 by a group of students passionate about AI and machine learning. We started with a small group of members and have since grown into a vibrant community of many students from various majors.
               </p>
               <p>
-                Add a short timeline or highlight key milestones here: first event, first project,
-                first collaboration with a department or external org, etc.
+                Formerly Computational Science and Mathematics (CSMA), we rebranded to SPARC in 2026 to better reflect our focus on AI research and projects. Our vision is to continue expanding our community, fostering collaboration, and making a meaningful impact on campus and beyond through our work in AI.
               </p>
             </CardContent>
           </Card>
-
-          <div className="relative h-56 rounded-2xl border border-dashed border-zinc-300 bg-zinc-50/80 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 md:h-64">
-            <Image
-              unoptimized
-              src="/sparc-3.jpg"
-              alt="SPARC Hero Image"
-              fill
-              className="rounded-2xl object-cover"
-            />
-          </div>
         </section>
       </div>
     </main>

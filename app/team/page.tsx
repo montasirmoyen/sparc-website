@@ -42,45 +42,46 @@ const team = [
 
 export default function TeamPage() {
   return (
-    <div className="space-y-8">
-      <section className="space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Team</h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Use this page to recognize the students who created SPARC when it was a small and
-          unofficial group. Replace the placeholders below with real names, roles, and stories.
-        </p>
-      </section>
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50">
+        <section className="space-y-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Team</h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            Use this page to recognize the students who created SPARC when it was a small and
+            unofficial group. Replace the placeholders below with real names, roles, and stories.
+          </p>
+        </section>
 
-      <section className="grid gap-2 md:grid-cols-3">
-        {team.map((member) => (
-          <Card key={member.name}>
-            <CardHeader className="border-b-0 pb-0">
-              <div className="flex items-center gap-3">
-                <div className="relative w-24 h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
-                  {/* Replace src with a real image in /public */}
-                  <Image
-                  unoptimized
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover"
-                  />
+        <section className="grid gap-2 md:grid-cols-3">
+          {team.map((member) => (
+            <Card key={member.name}>
+              <CardHeader className="border-b-0 pb-0">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-24 h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                    <Image
+                      unoptimized
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="space-y-0.5">
+                    <CardTitle className="text-base">{member.name}</CardTitle>
+                    <CardDescription className="text-xs">
+                      {member.role}
+                    </CardDescription>
+                  </div>
                 </div>
-                <div className="space-y-0.5">
-                  <CardTitle className="text-base">{member.name}</CardTitle>
-                  <CardDescription className="text-xs">
-                    {member.role}
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-3 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              {member.blurb}
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-    </div>
+              </CardHeader>
+              <CardContent className="pt-3 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+                {member.blurb}
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+      </div>
+    </main>
   );
 }
 

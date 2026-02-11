@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { link } from "fs";
 
 export default function ProjectsPage() {
   const projects = [
@@ -15,6 +16,7 @@ export default function ProjectsPage() {
       name: "Smart Campus Navigator & Club Finder",
       status: "Completed",
       timeframe: "Spring 2025",
+      link: "https://github.com/MohammedAlTal/Suffolk_CSMA",
       description:
         "Our first ever group project focused on creating a smart campus navigation system and club finder to enhance student experience.",
     },
@@ -22,6 +24,7 @@ export default function ProjectsPage() {
       name: "CollegiateX Internship",
       status: "Completed",
       timeframe: "Fall 2025",
+      link: "https://collegiatex.com/",
       description:
         "In the fall 2025, Mohammed, the president of SPARC, collaborated with CollegiateX and granted everyone at the club an internship to build their mobile app.",
     },
@@ -29,6 +32,7 @@ export default function ProjectsPage() {
       name: "SPARC Website",
       status: "Idea / Proposal",
       timeframe: "Spring 2026",
+      link: "https://sparc-su.vercel.app",
       description:
         "A group of SPARC members is proposing to build and maintain a public website for the club, showcasing our mission, team, projects, and resources for members. This would be a great opportunity to learn web development and create something that represents SPARC to the wider community.",
     },
@@ -40,7 +44,7 @@ export default function ProjectsPage() {
         <section className="space-y-3">
           <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Projects</h1>
           <p className="max-w-2xl text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Learn about our real world applications, research, and tools built by SPARC members. Our projects are hands-on opportunities to apply machine learning concepts, collaborate with peers, and create impactful solutions. 
+            Learn about our real world applications, research, and tools built by SPARC members. Our projects are hands-on opportunities to apply machine learning concepts, collaborate with peers, and create impactful solutions.
           </p>
         </section>
 
@@ -56,7 +60,7 @@ export default function ProjectsPage() {
 
         <section className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {projects.map((project) => (
-            <Card key={project.name} size="sm">
+            <Card key={project.name} size="sm" className="flex flex-col">
               <CardHeader className="mb-2 border-b-0 pb-0">
                 <div className="flex items-start sm:items-center justify-between gap-2">
                   <CardTitle className="text-xs sm:text-sm leading-tight">{project.name}</CardTitle>
@@ -71,9 +75,15 @@ export default function ProjectsPage() {
               <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
                 {project.description}
               </CardContent>
-              <CardFooter className="mt-2 sm:mt-3 border-t-0 pt-0 text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400">
-                Optional: add links to GitHub, demos, or papers here.
-              </CardFooter>
+              {project.link && (
+                <CardContent className="mt-auto pt-2">
+                  <Button size="sm" variant="outline" className="text-xs">
+                    <a href={project.link} target="_blank" rel="noreferrer">
+                      View
+                    </a>
+                  </Button>
+                </CardContent>
+              )}
             </Card>
           ))}
         </section>

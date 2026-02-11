@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SiteShell } from "@/components/site-shell";
+import Navbar from "@/components/ui/navbar";
+import Footer from "@/components/ui/footer";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -31,7 +32,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SiteShell>{children}</SiteShell>
+          <Navbar />
+          {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

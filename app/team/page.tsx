@@ -56,6 +56,13 @@ const team = [
     blurb:
       "Hey, I'm a Computer Science Student at Suffolk University.",
   },
+  {
+    name: "Margulan Kudaibergen",
+    role: "Founding Member · Computer Science '28",
+    image: "/margulan.jpeg",
+    blurb:
+      "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
+  },
 ];
 
 export default function TeamPage() {

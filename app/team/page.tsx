@@ -15,6 +15,7 @@ const team = [
     role: "President · Computer Science '26",
     image: "/mo.jpeg",
     website: "https://mohammedkhodoraltal.com/",
+    linkedin: "https://www.linkedin.com/in/mohammed-al-tal/",
     blurb:
       "Hey there, I'm an undergraduate researcher in Computer Science and Applied Math at Suffolk University, passionate about AI for health, scientific discovery, and public benefit.",
   },
@@ -22,6 +23,7 @@ const team = [
     name: "Sarmad Shah",
     role: "Vice-President · Computer Science '26",
     image: "/sarmad.jpeg",
+    linkedin: "https://www.linkedin.com/in/sarmadshah03/",
     blurb:
       "Hey, I'm a Computer Science Student at Suffolk University.",
   },
@@ -30,6 +32,7 @@ const team = [
     role: "Treasurer · Computer Science '26",
     image: "/kyle.jpeg",
     website: "https://kyleerhabor.com/",
+    linkedin: "https://www.linkedin.com/in/kyleerhabor/",
     blurb:
       "Hi, I'm a software developer studying Computer Science at Suffolk University in Boston, MA. I spend my days studying and developing software.",
   },
@@ -37,6 +40,7 @@ const team = [
     name: "Endi Fejzollari",
     role: "Secretary · Computer Science '27",
     image: "/endi.jpeg",
+    linkedin: "https://www.linkedin.com/in/endi-fejzollari-716aab181/",
     blurb:
       "Hey, I'm a Computer Science Student at Suffolk University.",
   },
@@ -46,13 +50,15 @@ const team = [
     role: "Founding Member · Computer Science '27",
     image: "/monty.jpg",
     website: "https://montasirmoyen.com/",
+    linkedin: "https://www.linkedin.com/in/montasirmoyen/",
     blurb:
-      "I'm a Computer Science student at Suffolk University in Boston, MA, check out my blogs @ montasirmoyen.com/blog",
+      "Hello, I'm a Computer Science student at Suffolk University and a Software Developer & Engineer, check out my blogs: montasirmoyen.com/blog",
   },
   {
     name: "Kanan Guliyev",
     role: "Founding Member · Computer Science '27",
     image: "/kanan.jpg",
+    linkedin: "https://www.linkedin.com/in/kananguliyev/",
     blurb:
       "Hey, I'm a Computer Science Student at Suffolk University.",
   },
@@ -60,6 +66,7 @@ const team = [
     name: "Margulan Kudaibergen",
     role: "Founding Member · Computer Science '28",
     image: "/margulan.jpeg",
+    linkedin: "https://www.linkedin.com/in/margulan-kudaibergen/",
     blurb:
       "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
   },
@@ -109,18 +116,26 @@ export default function TeamPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="text-[11px] sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-                {member.blurb}
-              </CardContent>
-              <CardContent className="mt-3 sm:mt-4">
+              <CardContent className="mb-2 sm:mt-4">
                 {member.website && (
-                  <Button asChild size="xs" variant="outline" className="text-xs">
+                  <Button asChild size="xs" variant="outline" className="mr-2 text-xs">
                     <a href={member.website} target="_blank" rel="noreferrer">
                       Visit Website
                     </a>
                   </Button>
                 )}
+                {member.linkedin && (
+                  <Button asChild size="xs" variant="outline" className="text-xs">
+                    <a href={member.linkedin} target="_blank" rel="noreferrer">
+                      Visit LinkedIn
+                    </a>
+                  </Button>
+                )}
               </CardContent>
+              <CardContent className="text-[11px] sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+                {member.blurb}
+              </CardContent>
+              
             </Card>
           ))}
         </section>

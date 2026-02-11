@@ -10,25 +10,25 @@ import Image from "next/image";
 
 export default function JoinPage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-4">
-        <section className="grid gap-6 md:grid-cols-[3fr,2fr] md:items-center">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-6 sm:gap-y-8">
+        <section className="grid gap-4 sm:gap-6 md:grid-cols-[3fr,2fr] md:items-center">
           <div className="space-y-4">
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
               Join SPARC
             </h1>
-            <p className="max-w-xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+            <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               Join SPARC to explore machine learning and AI research, work on real projects, and connect with fellow students. All experience levels welcome!
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400">
-              <span className="rounded-full bg-zinc-100 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400">
+              <span className="rounded-full bg-zinc-100 px-3 py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 Recruiting
               </span>
               <span>We are openly recruiting new members for Spring 2026.</span>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="sm">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button asChild size="sm" className="text-xs">
                 <a
                   href="https://example.com/sparc-application"
                   target="_blank"
@@ -37,7 +37,7 @@ export default function JoinPage() {
                   Apply
                 </a>
               </Button>
-              <Button asChild size="sm" variant="outline">
+              <Button asChild size="sm" variant="outline" className="text-xs">
                 <a href="mailto:sparc@studentorgs.suffolk.edu">
                   Email us with questions
                 </a>
@@ -45,7 +45,7 @@ export default function JoinPage() {
             </div>
           </div>
 
-          <div className="relative h-56 rounded-lg bg-transparent md:h-64">
+          <div className="relative h-48 sm:h-56 rounded-lg bg-transparent md:h-64">
             <Image
               unoptimized
               src="/sparc-join.jpeg"
@@ -57,10 +57,10 @@ export default function JoinPage() {
 
           <Card size="sm">
             <CardHeader>
-              <CardTitle className="text-base">Recruitment Process</CardTitle>
-              <CardDescription>How joining works</CardDescription>
+              <CardTitle className="text-sm sm:text-base">Recruitment Process</CardTitle>
+              <CardDescription className="text-xs">How joining works</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <CardContent className="space-y-2 text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               <p>
                 Simply fill out our application form with some basic info about yourself, your interests, and any relevant experience. Our leadership team will review applications on a rolling basis and follow up with next steps. We typically hold an info session and/or interview to get to know applicants better and answer any questions. We want to make the process as welcoming and low-pressure as possible, so don&apos;t worry about having tons of experience – we value curiosity and enthusiasm above all!
               </p>
@@ -68,29 +68,29 @@ export default function JoinPage() {
           </Card>
         </section>
 
-        <section className="grid gap-6 md:grid-cols-3">
+        <section className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <Card size="sm">
             <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-sm">Who should apply</CardTitle>
+              <CardTitle className="text-xs sm:text-sm">Who should apply</CardTitle>
             </CardHeader>
-            <CardContent className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               Join SPARC if you are passionate about machine learning, AI, and data science. We welcome students from all majors and backgrounds who are eager to learn, collaborate, and contribute to projects and research.
               attract – by interest, not just major.
             </CardContent>
           </Card>
           <Card size="sm">
             <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-sm">Time commitment</CardTitle>
+              <CardTitle className="text-xs sm:text-sm">Time commitment</CardTitle>
             </CardHeader>
-            <CardContent className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               We understand everyone has different schedules and commitments, so we don&apos;t require a specific time commitment. We encourage members to get involved in whatever way works best for them, whether that&apos;s attending meetings, contributing to projects, or just participating in discussions. We do ask that members stay engaged and communicate with the team about their availability and interests.
             </CardContent>
           </Card>
           <Card size="sm">
             <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-sm">Accessibility</CardTitle>
+              <CardTitle className="text-xs sm:text-sm">Accessibility</CardTitle>
             </CardHeader>
-            <CardContent className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               SPARC is committed to being welcoming and accessible to all students. No prior experience is required to join, and we offer recorded sessions and mentorship to support your learning and growth.
               experience not required, recorded sessions, mentorship).
             </CardContent>

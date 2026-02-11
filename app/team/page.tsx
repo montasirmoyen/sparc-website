@@ -60,21 +60,21 @@ const team = [
 
 export default function TeamPage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-4">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-6 sm:gap-y-8">
         <section className="space-y-3">
-          <h1 className="text-2xl font-semibold tracking-tight">Team</h1>
-          <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Team</h1>
+          <p className="max-w-2xl text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
             Meet the team behind SPARC. We are a group of diverse and passionate students at Suffolk University, united by our love for technology and AI.
           </p>
         </section>
 
-        <section className="grid gap-6 md:grid-cols-3">
+        <section className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {team.map((member) => (
             <Card key={member.name}>
               <CardHeader className="border-b pb-0">
-                <div className="flex items-center">
-                  <div className="relative w-24 aspect-square overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="flex items-start gap-2">
+                  <div className="relative w-16 sm:w-24 aspect-square flex-shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
                     <Image
                       unoptimized
                       src={member.image}
@@ -83,12 +83,12 @@ export default function TeamPage() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="space-y-0.5 px-4">
+                  <div className="space-y-0.5 px-2 sm:px-4 min-w-0">
                     <div>
-                      <CardTitle className="text-base">
+                      <CardTitle className="text-xs sm:text-base break-words">
                         {member.name}
                         {member.nickname && (
-                          <span className="text-zinc-500 dark:text-zinc-400 font-normal">
+                          <span className="text-zinc-500 dark:text-zinc-400 font-normal text-[10px] sm:text-xs">
                             {" "}
                             ({member.nickname})
                           </span>
@@ -96,18 +96,18 @@ export default function TeamPage() {
                       </CardTitle>
                     </div>
 
-                    <CardDescription className="text-xs">
+                    <CardDescription className="text-[10px] sm:text-xs">
                       {member.role}
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+              <CardContent className="text-[11px] sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
                 {member.blurb}
               </CardContent>
-              <CardContent className="mt-4">
+              <CardContent className="mt-3 sm:mt-4">
                 {member.website && (
-                  <Button asChild size="sm" variant="outline">
+                  <Button asChild size="xs" variant="outline" className="text-xs">
                     <a href={member.website} target="_blank" rel="noreferrer">
                       Visit Website
                     </a>

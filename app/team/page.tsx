@@ -70,6 +70,14 @@ const team = [
     blurb:
       "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
   },
+   {
+    name: "Bexultan Abila",
+    role: "Founding Member · Computer Science '27",
+    image: "/Bex.jpeg",
+    linkedin: "https://www.linkedin.com/in/beksabila/",
+    blurb:
+      "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
+  },
 ];
 
 export default function TeamPage() {

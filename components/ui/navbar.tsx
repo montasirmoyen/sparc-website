@@ -12,7 +12,7 @@ export default function Navbar() {
     return (
         <header className="border-b border-zinc-200 bg-white/80 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/80">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-6 lg:px-8">
-                <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
                     <div className="flex size-8 sm:size-9 items-center justify-center rounded-lg bg-zinc-900 text-xs sm:text-sm font-semibold text-zinc-50 shadow-sm dark:bg-zinc-50 dark:text-zinc-900">
                         SP
                     </div>
@@ -43,7 +43,7 @@ export default function Navbar() {
                         size="sm"
                         className="hidden lg:inline-flex"
                     >
-                        <Link href="/join">Apply</Link>
+                        <Link href="/join">Join</Link>
                     </Button>
                     <Button
                         variant="ghost"
@@ -70,7 +70,7 @@ export default function Navbar() {
                         <MobileNavLink href="/projects" onClick={() => setMobileMenuOpen(false)}>Projects</MobileNavLink>
                         <MobileNavLink href="/join" onClick={() => setMobileMenuOpen(false)}>Join</MobileNavLink>
                         <MobileNavLink href="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</MobileNavLink>
-                        <div className="border-t border-zinc-200 pt-3 dark:border-zinc-800 mt-2">
+                        {/*<div className="border-t border-zinc-200 pt-3 dark:border-zinc-800 mt-2">
                             <Button
                                 asChild
                                 className="w-full"
@@ -78,7 +78,7 @@ export default function Navbar() {
                             >
                                 <Link href="/join">Apply</Link>
                             </Button>
-                        </div>
+                        </div>*/}
                     </nav>
                 </div>
             )}

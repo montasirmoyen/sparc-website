@@ -76,7 +76,7 @@ const team = [
     image: "/Bex.jpeg",
     linkedin: "https://www.linkedin.com/in/beksabila/",
     blurb:
-      "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
+      "Aspiring software engineer focused on scalable architecture, clean code, and continuous technical growth.",
   },
 ];
 

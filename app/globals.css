@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *, .dim, .dim *));
 
 :root {
   --background: #ffffff;
@@ -16,6 +16,24 @@
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+}
+
+.dim {
+  --background: #15202b;
+  --foreground: #e7e9ea;
+
+  /* Override zinc palette to navy-blue tints (X Dim style) */
+  --color-zinc-50: #e7e9ea;
+  --color-zinc-100: #d6dce2;
+  --color-zinc-200: #c4cdd5;
+  --color-zinc-300: #8b98a5;
+  --color-zinc-400: #8b98a5;
+  --color-zinc-500: #6e7b8a;
+  --color-zinc-600: #8b98a5;
+  --color-zinc-700: #536471;
+  --color-zinc-800: #38444d;
+  --color-zinc-900: #1e2732;
+  --color-zinc-950: #15202b;
 }
 
 body {

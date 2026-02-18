@@ -10,7 +10,7 @@ export default function Home() {
               Suffolk University · Student Club
             </p>
             <h1 className="text-balance text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight">
-              Suffolk Computing AI Research Club
+              Suffolk Programming, AI & Research Club
             </h1>
             <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               SPARC is a student club at Suffolk University focused on applied machine learning and AI research. We build real projects, host workshops, and create a space for students across majors to explore the world of AI together.

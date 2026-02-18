@@ -21,7 +21,7 @@ export default function Navbar() {
                             SPARC
                         </span>
                         <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                            Suffolk Computing AI Research Club
+                            Suffolk Programming, AI & Research Club
                         </span>
                     </div>
                 </Link>

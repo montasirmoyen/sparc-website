@@ -73,7 +73,7 @@ const team = [
    {
     name: "Bexultan Abila",
     role: "Founding Member · Class of 2027",
-    image: "/Bex.jpeg",
+    image: "/Bex2.JPG",
     linkedin: "https://www.linkedin.com/in/beksabila/",
     blurb:
       "Aspiring software engineer focused on scalable architecture, clean code, and continuous technical growth.",

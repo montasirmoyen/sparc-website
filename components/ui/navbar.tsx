@@ -65,7 +65,7 @@ export default function Navbar() {
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-6 lg:px-8">
                 <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
                     <div className="flex size-8 items-center justify-center">
-                        <img src="/sparc-logo.png" alt="SPARC" className="size-full object-contain" />
+                        <img src="/sparc-logo.png" alt="SPARC" className="size-full object-contain dark:invert" />
                     </div>
                     <div className="hidden sm:flex flex-col leading-tight">
                         <span className="text-sm font-semibold tracking-tight">

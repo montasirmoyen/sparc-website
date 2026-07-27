@@ -2,28 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/ui/navbar";
-import {Footer} from "@/components/ui/footer";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "SPARC — Suffolk Programming, AI & Research Club",
-  description:
-    "Suffolk Programming, AI & Research Club (SPARC), a student-led club at Suffolk University where we build software, do AI agentic coding, discuss tech, and connect members with real-world internships.",
-  openGraph: {
-    title: "SPARC — Suffolk Programming, AI & Research Club",
-    description: "Suffolk Programming, AI & Research Club (SPARC), a student-led club at Suffolk University where we build software, do AI agentic coding, discuss tech, and connect members with real-world internships.",
-    url: "https://sparc-su.vercel.app/",
-    siteName: "SPARC",
-    type: "website",
-    images: [
-      {
-        url: "https://sparc-su.vercel.app/sparc-8.jpeg",
-        width: 1920,
-        height: 1080,
-        alt: "SPARC - Suffolk Programming, AI & Research Club Preview",
-      },
-    ],
-  },
-};
+export const metadata: Metadata = pageMetadata("Home");
 
 export default function RootLayout({
   children,
@@ -33,19 +14,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        {/* forcedTheme pins the site to light for this phase. The redesign is a
+            composition of light and dark bands rather than a light theme, so a
+            global inversion would turn the ink bands light and flatten the
+            contact sheet. next-themes stays installed so the toggle can come
+            back once the club decides. */}
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          forcedTheme="light"
           themes={["light", "dark", "dim"]}
           disableTransitionOnChange
         >
           <Navbar />
           {children}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
   );
 }
-

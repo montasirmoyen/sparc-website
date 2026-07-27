@@ -1,0 +1,323 @@
+/* ==========================================================================
+   SPARC — one stylesheet, six pages.
+
+   Everything down to the ADDITIONS block is the design source
+   (SPARC-contactsheet.html) unchanged, apart from two marked edits: the
+   header hairline is scroll-triggered, and .band-head accepts h1 as well as
+   h2. The additions are the places a one-page design had no answer for a
+   six-page site; each is derived from a pattern already here and is marked
+   with what it came from.
+   ========================================================================== */
+
+:root{
+  --black:#121212;
+  --black-2:#1D1D1D;
+  --white:#FAFAF8;
+  --white-2:#EDEDEA;
+  --grey:#6E6E6B;
+  --grey-2:#9A9A96;
+  /* The one spot colour: the red vinyl of the chairs in Room 8065,
+     present in nearly every photograph the club has taken. */
+  --chair:#B7202B;
+  --chair-hi:#DE4B54;
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:20px; --s5:32px; --s6:56px; --s7:96px; --s8:144px;
+
+  --grot:"Helvetica Neue",Helvetica,Arial,"Liberation Sans",sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+
+  /* 6 steps, ratio ~1.45 — display-driven */
+  --t-xs:11px; --t-sm:13px; --t-base:17px; --t-md:23px; --t-lg:38px; --t-xl:60px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--white);color:var(--black);font:var(--t-base)/1.6 var(--grot)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--chair);outline-offset:3px}
+
+.pad{max-width:1360px;margin:0 auto;padding:0 var(--s4)}
+@media(min-width:900px){.pad{padding:0 var(--s5)}}
+.frame-no{font:400 var(--t-xs)/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+
+/* ---------- nav ---------- */
+/* The hairline is absent at rest and appears once the page has scrolled, so
+   there is no line on landing but content never dissolves into the sticky bar.
+   Reserved as `transparent` rather than toggled on, so nothing shifts by 1px
+   when it appears. The global prefers-reduced-motion rule zeroes the fade. */
+.top{
+  position:sticky;top:0;z-index:10;background:var(--white);
+  border-bottom:1px solid transparent;
+  transition:border-color 140ms ease-out
+}
+.top.scrolled{border-bottom-color:var(--black)}
+.top .row{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);padding:var(--s3) 0}
+.wordmark{font:900 var(--t-md)/1 var(--grot);letter-spacing:-.03em;text-decoration:none}
+.wordmark i{color:var(--chair);font-style:normal}
+.top nav{display:none;gap:var(--s4)}
+@media(min-width:820px){.top nav{display:flex}}
+.top nav a{font:700 var(--t-sm)/1 var(--grot);letter-spacing:.02em;text-decoration:none;color:var(--black);text-transform:uppercase}
+.top nav a:hover{color:var(--chair)}
+.top .apply-lnk{font:700 var(--t-sm)/1 var(--grot);text-transform:uppercase;letter-spacing:.04em;text-decoration:none;background:var(--chair);color:var(--white);padding:11px 15px}
+.top .apply-lnk:hover{background:var(--black)}
+
+/* ---------- SIGNATURE: the contact sheet, full bleed, gutterless ---------- */
+.sheet{position:relative;background:var(--black)}
+/* Narrow: clip the sheet so the masthead sits on the first screen rather than
+   seven rows down. The frames continue behind the crop, as on a real sheet. */
+@media(max-width:899px){.sheet{max-height:82vh;overflow:hidden}}
+.sheet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+@media(min-width:700px){.sheet-grid{grid-template-columns:repeat(5,1fr)}}
+@media(min-width:1100px){.sheet-grid{grid-template-columns:repeat(7,1fr)}}
+.sheet-grid figure{margin:0;position:relative;overflow:hidden}
+.sheet-grid img{
+  aspect-ratio:1/1;object-fit:cover;width:100%;
+  filter:grayscale(1) contrast(1.12) brightness(.82);
+  opacity:0;transform:scale(1.04);
+  animation:settle 520ms cubic-bezier(.2,.7,.3,1) forwards
+}
+@keyframes settle{to{opacity:1;transform:none}}
+.sheet-grid figure:nth-child(n) img{animation-delay:calc(var(--i,0) * 28ms)}
+.sheet-grid figcaption{
+  position:absolute;left:6px;bottom:5px;font:400 9.5px/1 var(--mono);letter-spacing:.1em;
+  color:var(--white);opacity:.62;text-shadow:0 1px 2px rgba(0,0,0,.9)
+}
+.sheet-over{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:var(--s5) var(--s4) var(--s4);
+  background:linear-gradient(to top,rgba(18,18,18,.97) 0%,rgba(18,18,18,.93) 55%,rgba(18,18,18,.55) 100%);
+  pointer-events:none
+}
+@media(min-width:900px){
+  .sheet-over{background:linear-gradient(to top,rgba(18,18,18,.95) 0%,rgba(18,18,18,.78) 46%,rgba(18,18,18,.28) 100%)}
+}
+@media(min-width:900px){.sheet-over{padding:var(--s7) var(--s5) var(--s5)}}
+.sheet-over .inner{max-width:1360px;margin:0 auto;width:100%;pointer-events:auto}
+.kicker{font:400 var(--t-xs)/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--chair-hi);margin:0 0 var(--s4)}
+h1.huge{
+  margin:0;color:var(--white);font:900 var(--t-lg)/.92 var(--grot);letter-spacing:-.035em;
+  text-transform:uppercase;text-wrap:balance;max-width:20ch
+}
+@media(min-width:720px){h1.huge{font-size:var(--t-xl)}}
+@media(min-width:1100px){h1.huge{font-size:84px}}
+h1.huge em{font-style:normal;color:var(--chair-hi)}
+.sheet-over p{margin:var(--s4) 0 0;max-width:56ch;color:var(--white-2);font-size:var(--t-base);line-height:1.55}
+.sheet-over .acts{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s5)}
+.btn{
+  font:700 var(--t-sm)/1 var(--grot);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;
+  padding:16px 22px;background:var(--chair);color:var(--white);
+  transition:background-color 140ms ease-out,color 140ms ease-out
+}
+.btn:hover{background:var(--white);color:var(--black)}
+.btn.line{background:transparent;color:var(--white);box-shadow:inset 0 0 0 2px var(--white)}
+.btn.line:hover{background:var(--white);color:var(--black);box-shadow:inset 0 0 0 2px var(--white)}
+.btn.dark{background:var(--black);color:var(--white)}
+.btn.dark:hover{background:var(--chair);color:var(--white)}
+
+/* ---------- section rhythm 144 / 96 / 56 ---------- */
+.band{padding:var(--s7) 0}
+.band.lead{padding-top:var(--s8)}
+.band.ink{background:var(--black);color:var(--white)}
+.band.ink .frame-no{color:var(--grey-2)}
+.band-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;margin-bottom:var(--s6)}
+/* h1 as well as h2: interior routes promote their lead band-head to h1 so
+   every page has one. Identical rendering — only the element changes. */
+.band-head :is(h1,h2){
+  margin:0;font:900 var(--t-lg)/.95 var(--grot);letter-spacing:-.03em;text-transform:uppercase;max-width:22ch;text-wrap:balance
+}
+@media(min-width:900px){.band-head :is(h1,h2){font-size:var(--t-xl)}}
+.band-head :is(h1,h2) em{font-style:normal;color:var(--chair)}
+.band.ink .band-head :is(h1,h2) em{color:var(--chair-hi)}
+.band-head .aside{max-width:46ch;font-size:var(--t-base);color:var(--grey)}
+.band.ink .band-head .aside{color:var(--grey-2)}
+
+/* ---------- work: full-bleed alternating plates ---------- */
+.work{display:grid;gap:var(--s6)}
+.job{display:grid;gap:var(--s4);grid-template-columns:1fr;align-items:start}
+@media(min-width:900px){
+  .job{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s5)}
+  .job:nth-child(even) .job-img{order:2}
+}
+.job-img img{aspect-ratio:16/10;object-fit:cover;width:100%;filter:grayscale(.15) contrast(1.05)}
+.job-txt h3{margin:var(--s3) 0 var(--s3);font:900 var(--t-md)/1.1 var(--grot);letter-spacing:-.02em;text-transform:uppercase}
+@media(min-width:900px){.job-txt h3{font-size:30px}}
+.job-txt h3 a{text-decoration:none;border-bottom:3px solid var(--chair)}
+.job-txt h3 a:hover{color:var(--chair)}
+.job-txt p{margin:0 0 var(--s4);color:var(--grey);max-width:52ch}
+.band.ink .job-txt p{color:var(--grey-2)}
+.job-txt ul{margin:0;padding:0;list-style:none;border-top:1px solid currentColor}
+.job-txt li{padding:var(--s3) 0;border-bottom:1px solid rgba(110,110,107,.35);font-size:var(--t-sm);line-height:1.55}
+.job-meta{display:flex;gap:var(--s4);align-items:baseline;flex-wrap:wrap}
+.job-meta .tag{font:700 var(--t-xs)/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--chair);border:2px solid var(--chair);padding:6px 8px}
+.band.ink .job-meta .tag{color:var(--chair-hi);border-color:var(--chair-hi)}
+
+/* ---------- the wall: every face at the same size ---------- */
+.wall{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:currentColor}
+@media(min-width:560px){.wall{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.wall{grid-template-columns:repeat(4,1fr)}}
+.face{position:relative;background:var(--white);overflow:hidden}
+.band.ink .face{background:var(--black)}
+.face img{aspect-ratio:1/1;object-fit:cover;width:100%;filter:grayscale(1) contrast(1.08)}
+.face .id{padding:var(--s3)}
+.face .id b{display:block;font:700 var(--t-sm)/1.3 var(--grot);letter-spacing:-.005em}
+.face .id span{display:block;font:400 var(--t-xs)/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--grey);margin-top:5px}
+.band.ink .face .id span{color:var(--grey-2)}
+.face .id a{font:400 var(--t-xs)/1.4 var(--mono);letter-spacing:.05em;color:var(--chair)}
+.band.ink .face .id a{color:var(--chair-hi)}
+
+/* ---------- dates: meetings as a list of nights ---------- */
+.nights{border-top:2px solid currentColor}
+.night{display:grid;grid-template-columns:1fr;gap:var(--s2);padding:var(--s4) 0;border-bottom:1px solid rgba(110,110,107,.4)}
+@media(min-width:820px){.night{grid-template-columns:132px minmax(0,1fr) 180px;gap:var(--s4);align-items:baseline}}
+.night .d{font:700 var(--t-sm)/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.night h3{margin:0 0 var(--s2);font:700 var(--t-base)/1.3 var(--grot);letter-spacing:-.01em}
+.night p{margin:0;font-size:var(--t-sm);color:var(--grey);max-width:60ch}
+.band.ink .night p{color:var(--grey-2)}
+.night .k{font:400 var(--t-xs)/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.band.ink .night .k{color:var(--grey-2)}
+
+/* ---------- empty state ---------- */
+.nothing{margin-top:var(--s5);padding:var(--s5);box-shadow:inset 0 0 0 2px currentColor}
+.nothing b{display:block;font:900 var(--t-md)/1.2 var(--grot);text-transform:uppercase;letter-spacing:-.02em;margin-bottom:var(--s3)}
+.nothing p{margin:0 0 var(--s3);max-width:60ch;font-size:var(--t-sm);line-height:1.6;color:var(--grey)}
+.band.ink .nothing p{color:var(--grey-2)}
+.nothing p:last-child{margin:0}
+.nothing a{color:var(--chair)}
+.band.ink .nothing a{color:var(--chair-hi)}
+
+/* ---------- story ---------- */
+.story{display:grid;gap:var(--s5);grid-template-columns:1fr}
+@media(min-width:900px){.story{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s6)}}
+.story p{margin:0 0 var(--s4);max-width:56ch}
+.story .big{font:400 var(--t-md)/1.35 var(--grot);letter-spacing:-.01em}
+@media(min-width:900px){.story .big{font-size:28px;line-height:1.28}}
+.story dl{margin:0;border-top:2px solid currentColor}
+.story dt{font:400 var(--t-xs)/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--grey);padding-top:var(--s4)}
+.band.ink .story dt{color:var(--grey-2)}
+.story dd{margin:var(--s2) 0 var(--s4);padding-bottom:var(--s4);border-bottom:1px solid rgba(110,110,107,.4);font-size:var(--t-sm)}
+
+/* ---------- closing ---------- */
+.close{padding:var(--s8) 0}
+.close h2{margin:0 0 var(--s4);font:900 var(--t-lg)/.93 var(--grot);letter-spacing:-.035em;text-transform:uppercase;max-width:24ch;text-wrap:balance}
+@media(min-width:900px){.close h2{font-size:76px}}
+.close h2 em{font-style:normal;color:var(--chair-hi)}
+.close p{margin:0 0 var(--s5);max-width:54ch;color:var(--grey-2)}
+.acts{display:flex;flex-wrap:wrap;gap:var(--s3)}
+
+footer{border-top:1px solid rgba(154,154,150,.4);padding:var(--s5) 0 var(--s6);font:400 var(--t-xs)/1.7 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+footer .cols{display:flex;flex-wrap:wrap;gap:var(--s4);justify-content:space-between}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:var(--s3);top:var(--s2);z-index:20;background:var(--chair);color:var(--white);padding:var(--s2) var(--s3);font:700 var(--t-xs) var(--grot);text-transform:uppercase}
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:0ms!important}
+  .sheet-grid img{animation:none;opacity:1;transform:none}
+}
+
+/* ==========================================================================
+   ADDITIONS — what a one-page design had no answer for.
+   No new tokens. Every value below already exists above.
+   ========================================================================== */
+
+/* 1. Header gutters. Carried over from the design source, where
+      `.top .row{padding:var(--s3) 0}` out-specifies `.pad{padding:0 var(--s4)}`
+      and zeroes it. Above 1360px the `.pad` max-width hides this; below it the
+      wordmark and Apply button sit hard against the viewport edge, and at
+      desktop the header is ~30px out of alignment with every band beneath it.
+      Restoring only the inline padding, which is what `.pad` on that div was
+      there to do. */
+.top .row{padding-inline:var(--s4)}
+@media(min-width:900px){.top .row{padding-inline:var(--s5)}}
+
+/* 2. The brand block: mark, wordmark, club name, as one link to Home.
+      The club name is set in the footer's type — 11px mono, uppercase — which
+      is where this system already renders that exact string. It is dropped
+      below 900px, where it would take ~290px it does not have. */
+.brand{display:flex;align-items:center;gap:var(--s3);text-decoration:none}
+.brand .mark{width:32px;height:32px;flex:none}
+.brand .stack{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand .sub{
+  display:none;
+  font:400 var(--t-xs)/1.2 var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--grey)
+}
+@media(min-width:900px){.brand .sub{display:block}}
+
+/* 3. Nav on narrow screens.
+      The source hid the nav below 820px with nothing in its place, which is
+      survivable on one page — you scroll — and fatal on six. Six labels will
+      not fit on one row at 375px either, so it is a disclosure, not a second
+      row. No icon: this system has none, and a hamburger would be the first.
+      The button says what it does, in the nav's own type. */
+.top .row{flex-wrap:wrap}
+.nav-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;min-width:44px;padding:0 var(--s3);
+  font:700 var(--t-sm)/1 var(--grot);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--black);background:transparent;border:0;cursor:pointer;
+  box-shadow:inset 0 0 0 2px var(--black)
+}
+.nav-toggle:hover{background:var(--black);color:var(--white)}
+@media(min-width:820px){.nav-toggle{display:none}}
+
+.top nav.open{
+  display:flex;flex-direction:column;gap:0;
+  order:3;flex-basis:100%;
+  margin-top:var(--s3);border-top:1px solid rgba(110,110,107,.35)
+}
+.top nav.open a{
+  display:flex;align-items:center;min-height:44px;
+  border-bottom:1px solid rgba(110,110,107,.35)
+}
+.top nav.open .apply-lnk{
+  justify-content:center;margin:var(--s4) 0 var(--s2);border-bottom:0
+}
+@media(min-width:820px){
+  .top nav.open{
+    flex-direction:row;gap:var(--s4);order:0;flex-basis:auto;
+    margin-top:0;border-top:0
+  }
+  .top nav.open a{display:inline;min-height:0;border-bottom:0}
+  .top nav.open .apply-lnk{margin:0}
+}
+
+/* 4. Current-page marker.
+      Six pages need one; one page did not. Derived from the nav's own hover
+      state, which is already --chair. Join carries the accent button, so
+      red-on-red would be invisible — it takes the button's hover state
+      instead, which is the same inversion. */
+.top nav a[aria-current="page"]{color:var(--chair)}
+.top nav .apply-lnk[aria-current="page"]{background:var(--black);color:var(--white)}
+
+/* 5. Post cards — the preview strip on Home.
+      Structurally .face (image, then a caption block, 1px rules from the grid
+      background). Two changes: 4/3 instead of 1/1, because these are scenes
+      rather than faces, and the .job-img filter instead of the wall's full
+      desaturation, because they carry the same kind of content .job does. */
+.posts{display:grid;grid-template-columns:1fr;gap:1px;background:currentColor}
+@media(min-width:700px){.posts{grid-template-columns:repeat(3,1fr)}}
+.post{display:block;position:relative;background:var(--white);overflow:hidden;text-decoration:none}
+.band.ink .post{background:var(--black)}
+.post img{aspect-ratio:4/3;object-fit:cover;width:100%;filter:grayscale(.15) contrast(1.05)}
+.post .id{padding:var(--s3)}
+.post .id b{display:block;font:700 var(--t-base)/1.3 var(--grot);letter-spacing:-.01em;text-wrap:balance}
+.post .id span{display:block;font:400 var(--t-xs)/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--grey);margin-top:var(--s2)}
+.band.ink .post .id span{color:var(--grey-2)}
+.post:hover .id b{color:var(--chair)}
+.band.ink .post:hover .id b{color:var(--chair-hi)}
+
+/* Small consequences of the five above. */
+/* The recordings list reuses .night; its third column holds a link where the
+   meetings list holds a kind. Same type, --chair for the link, as everywhere. */
+.night .k a{color:var(--chair)}
+.band.ink .night .k a{color:var(--chair-hi)}
+/* The club's mark in the footer. The source footer was type only; the mark is
+   black on transparent, so it inverts on the ink ground the footer sits on. */
+footer .cols span{display:flex;align-items:center;gap:var(--s2)}
+footer .mark{width:18px;height:18px;filter:invert(1);flex:none}
+/* Blog plates reuse .job. Their bodies run to several paragraphs where a
+   project runs to one, so the last one does not need its trailing margin. */
+.job-txt p:last-child{margin-bottom:0}
+/* .nothing carries a top margin for when it trails a list, as on Nights. As a
+   column of .story it is already at the top of its cell. */
+.story > .nothing{margin-top:0}

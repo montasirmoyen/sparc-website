@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./styles/sparc.css";
 
 @custom-variant dark (&:where(.dark, .dark *, .dim, .dim *));
 
@@ -7,12 +8,46 @@
   --foreground: #171717;
 }
 
+/* The redesign's tokens, exposed to Tailwind so utilities can reference them.
+   `inline` because sparc.css already emits the custom properties into :root —
+   this maps them onto Tailwind's namespaces without duplicating the values.
+   The hand-written component CSS in sparc.css stays hand-written; these exist
+   so one-off utility classes cannot reintroduce a raw hex or an off-scale gap. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-outfit: var(--font-outfit);
+
+  --color-black: var(--black);
+  --color-black-2: var(--black-2);
+  --color-white: var(--white);
+  --color-white-2: var(--white-2);
+  --color-grey: var(--grey);
+  --color-grey-2: var(--grey-2);
+  --color-chair: var(--chair);
+  --color-chair-hi: var(--chair-hi);
+
+  --spacing-s1: var(--s1);
+  --spacing-s2: var(--s2);
+  --spacing-s3: var(--s3);
+  --spacing-s4: var(--s4);
+  --spacing-s5: var(--s5);
+  --spacing-s6: var(--s6);
+  --spacing-s7: var(--s7);
+  --spacing-s8: var(--s8);
+
+  --text-xs: var(--t-xs);
+  --text-sm: var(--t-sm);
+  --text-base: var(--t-base);
+  --text-md: var(--t-md);
+  --text-lg: var(--t-lg);
+  --text-xl: var(--t-xl);
+
+  --font-grot: var(--grot);
+  --font-mono: var(--mono);
 }
 
+/* Retained but inert: the theme provider is pinned to light for this phase.
+   See the pull request description. */
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -34,10 +69,4 @@
   --color-zinc-800: #38444d;
   --color-zinc-900: #1e2732;
   --color-zinc-950: #15202b;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-outfit);
 }

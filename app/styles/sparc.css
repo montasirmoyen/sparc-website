@@ -128,7 +128,12 @@ h1.huge em{font-style:normal;color:var(--chair-hi)}
 @media(min-width:900px){.band-head :is(h1,h2){font-size:var(--t-xl)}}
 .band-head :is(h1,h2) em{font-style:normal;color:var(--chair)}
 .band.ink .band-head :is(h1,h2) em{color:var(--chair-hi)}
-.band-head .aside{max-width:46ch;font-size:var(--t-base);color:var(--grey)}
+/* The 1em is the browser default for <p>, which the design was authored
+   against — there is no reset in the static build. Tailwind's preflight zeroes
+   it, which drops this paragraph 16px inside its flex-end band-head and shifts
+   everything below by ~33px per band. Stated explicitly so the port renders
+   the same as the design it came from. */
+.band-head .aside{max-width:46ch;font-size:var(--t-base);color:var(--grey);margin:1em 0}
 .band.ink .band-head .aside{color:var(--grey-2)}
 
 /* ---------- work: full-bleed alternating plates ---------- */

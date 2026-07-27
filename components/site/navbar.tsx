@@ -22,25 +22,19 @@ export default function Navbar() {
 
   // The header carries no rule at rest and a black hairline once the page has
   // moved, so nothing underlines the masthead on landing but body copy never
-  // dissolves into the sticky bar. rAF-throttled; the listener is passive.
+  // dissolves into the sticky bar.
+  //
+  // The handler reads one property and compares it; there is no layout work to
+  // throttle, and React bails out of the re-render when the value has not
+  // changed. Deliberately not wrapped in requestAnimationFrame — that would
+  // make the border depend on the frame loop, which does not run while a tab
+  // is hidden, so a page restored mid-scroll could paint without its rule.
   useEffect(() => {
-    let frame = 0;
-
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        setScrolled(window.scrollY > 0);
-      });
-    };
+    const onScroll = () => setScrolled(window.scrollY > 0);
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Escape closes the disclosure and hands focus back to the control that

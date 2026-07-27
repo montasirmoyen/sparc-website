@@ -1,101 +1,138 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Image from "next/image";
+import type { Metadata } from "next";
+
+import { Closing, FORM, MAIL } from "@/components/site/closing";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = pageMetadata(
+  "Join",
+  "Apply to the Suffolk Programming, AI & Research Club. No prior experience required, all majors welcome, applications read as they arrive.",
+);
 
 export default function JoinPage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
-      <div className="flex min-h-screen flex-col text-zinc-900 dark:text-zinc-50 gap-y-6 sm:gap-y-8">
-        <section className="grid gap-4 sm:gap-6 md:grid-cols-[3fr,2fr] md:items-center">
-          <div className="space-y-4">
-            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
-              Join SPARC
-            </h1>
-            <p className="max-w-xl text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-              Join SPARC to build and ship real software, explore AI agentic coding, stay on top of tech, and access internship opportunities. All experience levels welcome.
-            </p>
-
-            <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400">
-              <span className="rounded-full bg-zinc-100 px-3 py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
-                Recruiting
-              </span>
-              <span>We are openly recruiting new members for Spring 2026.</span>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button asChild size="sm" className="text-xs">
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLScYYJFywXjQNGTlct-dIeZEdtWD25A9lmVbTzhxZm4nOpmlDg/viewform?usp=publish-editor"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Apply
-                </a>
-              </Button>
-              <Button asChild size="sm" variant="outline" className="text-xs">
-                <a href="mailto:sparc@studentorgs.suffolk.edu">
-                  Email us with questions
-                </a>
-              </Button>
-            </div>
-          </div>
-
-          <div className="relative h-48 sm:h-56 rounded-lg bg-transparent md:h-64">
-            <Image
-              unoptimized
-              src="/sparc-8.jpeg"
-              alt="SPARC Join Image"
-              fill
-              className="rounded-2xl object-cover"
-            />
-          </div>
-
-          <Card size="sm">
-            <CardHeader>
-              <CardTitle className="text-sm sm:text-base">Recruitment Process</CardTitle>
-              <CardDescription className="text-xs">How joining works</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2 text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              <p>
-                Simply fill out our application form with some basic info about yourself, your interests, and any relevant experience. Our leadership team will review applications on a rolling basis and follow up with next steps. We typically hold an info session and/or interview to get to know applicants better and answer any questions. We want to make the process as welcoming and low-pressure as possible, so don&apos;t worry about having tons of experience, we value curiosity and enthusiasm above all.
+    <>
+      <main id="main">
+        <section className="band lead" id="join">
+          <div className="pad">
+            <div className="band-head">
+              <h1>
+                The form is <em>open.</em>
+              </h1>
+              <p className="aside">
+                No prior experience required and no wrong major. Applications
+                are read as they arrive.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div className="story">
+              <div>
+                <p className="big">
+                  The form asks for the basics: who you are, what you are
+                  interested in, and anything you have built before.
+                </p>
+                <div className="acts">
+                  <a className="btn" href={FORM}>
+                    Open the application form
+                  </a>
+                  <a
+                    className="btn dark"
+                    href={`${MAIL}?subject=Question%20about%20joining`}
+                  >
+                    Ask a question first
+                  </a>
+                </div>
+              </div>
+              <div className="nothing">
+                <b>What happens after you send it</b>
+                <p>
+                  Leadership reads applications on a rolling basis and follows
+                  up with next steps. There is usually an info session or a
+                  short conversation so both sides can ask questions.
+                </p>
+                <p>
+                  It is deliberately low-pressure — curiosity counts for more
+                  than a CV.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          <Card size="sm">
-            <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-xs sm:text-sm">Who should apply</CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              Join SPARC if you want to build real software, work with AI tools, stay current with tech, or break into the industry through internships. We welcome students from all majors, interest and drive matter more than background.
-            </CardContent>
-          </Card>
-          <Card size="sm">
-            <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-xs sm:text-sm">Time commitment</CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              We understand everyone has different schedules and commitments, so we don&apos;t require a specific time commitment. We encourage members to get involved in whatever way works best for them, whether that&apos;s attending meetings, contributing to projects, or just participating in discussions. We do ask that members stay engaged and communicate with the team about their availability and interests.
-            </CardContent>
-          </Card>
-          <Card size="sm">
-            <CardHeader className="mb-2 border-b-0 pb-0">
-              <CardTitle className="text-xs sm:text-sm">Accessibility</CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs sm:text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-              SPARC is committed to being welcoming and accessible to all students. No prior experience is required to join, and we offer recorded sessions and mentorship to support your learning and growth.
-            </CardContent>
-          </Card>
+        <section className="band ink" id="story">
+          <div className="pad">
+            <div className="band-head">
+              <h2>
+                Started in <em>2025.</em> Renamed in 2026.
+              </h2>
+            </div>
+            <div className="story">
+              <div>
+                <p className="big">
+                  SPARC was founded by students who wanted to build real things,
+                  not just study theory.
+                </p>
+                <p>
+                  It started small and grew into a community of builders from
+                  across majors, held together by a shared drive to make
+                  software that matters.
+                </p>
+                <p>
+                  The club was Computational Science and Mathematics — CSMA —
+                  until 2026, when it was renamed to describe what it actually
+                  does: ship software, get members into internships, and stay
+                  close to where technology is going.
+                </p>
+              </div>
+              <dl>
+                <dt>Who should apply</dt>
+                <dd>
+                  Anyone who wants to build real software, work with AI tools,
+                  or get into the industry through an internship. All majors.
+                  Interest and drive matter more than background.
+                </dd>
+                <dt>Time commitment</dt>
+                <dd>
+                  No fixed hours. Come to meetings, contribute to a project, or
+                  just join the discussions — whatever fits the semester you are
+                  having. The one ask is that you tell the team what you are up
+                  for.
+                </dd>
+                <dt>Accessibility</dt>
+                <dd>
+                  No prior experience is required. Sessions are recorded and
+                  members are mentored, so a late start is not a closed door.
+                </dd>
+                <dt>Room</dt>
+                <dd>73 Tremont, Room 8065 — Boston</dd>
+                <dt>Club advisor</dt>
+                <dd>
+                  Professor Anthony Gentilucci. Questions about club operations
+                  or event planning go to him directly.{" "}
+                  <a href="mailto:argentilucci@suffolk.edu">
+                    argentilucci@suffolk.edu
+                  </a>
+                </dd>
+              </dl>
+            </div>
+          </div>
         </section>
-      </div>
-    </main>
+      </main>
+
+      <Closing
+        actions={
+          <>
+            <a className="btn" href={FORM}>
+              Open the application form
+            </a>
+            <a className="btn line" href={MAIL}>
+              Email the club
+            </a>
+          </>
+        }
+      >
+        The application is a short form. If you would rather ask something
+        first, a person answers the email.
+      </Closing>
+    </>
   );
 }
-

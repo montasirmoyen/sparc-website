@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/site/navbar";
-import { pageMetadata } from "@/lib/metadata";
+import { baseMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = pageMetadata("Home");
+export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
   children,

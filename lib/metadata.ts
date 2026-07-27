@@ -14,8 +14,16 @@ const DESCRIPTION =
  * keeps every route's card intact.
  */
 export function pageMetadata(page: string, description = DESCRIPTION): Metadata {
-  const title = `SPARC: ${page}`;
+  return titledMetadata(`SPARC: ${page}`, description);
+}
 
+/** The layout's fallback. Routes all set their own, so this is what a route
+ *  that forgets to would inherit — and 404s. */
+export const baseMetadata: Metadata = titledMetadata(
+  "SPARC — Suffolk Programming, AI & Research Club",
+);
+
+function titledMetadata(title: string, description = DESCRIPTION): Metadata {
   return {
     title,
     description,

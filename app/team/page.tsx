@@ -52,7 +52,7 @@ const team = [
     name: "Montasir Moyen",
     nickname: "Monty",
     role: "Project Lead (Website) - Class of 2027",
-    image: "/monty.jpg",
+    image: "/monty.png",
     website: "https://montasirmoyen.com/",
     linkedin: "https://www.linkedin.com/in/montasirmoyen/",
     blurb:

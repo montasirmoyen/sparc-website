@@ -81,20 +81,33 @@ const STATS: {
 }[] = [
   {
     value: FOUNDED,
-    /* client mockup, Aug 2026 — "FOUNDED AT SUFFOLK". Uppercasing is
-       MicroLabel's, so the source string stays sentence case like every
-       other label on the site. */
+    /* client mockup, Aug 2026 — "FOUNDED AT SUFFOLK". The all-caps is
+       MicroLabel's `uppercase`, not the source string, so every label in
+       this array is stored in its natural casing and renders identically
+       either way. */
     label: "Founded at Suffolk",
     rule: "pr-5",
     accent: true,
   },
   {
-    value: String(members.length),
-    /* NOTE(client): mockup said "Founding Members"; data says 7 founding of
-       12 members — label follows data pending client call. "Members" is the
-       bare-noun form the /about facts strip already uses
-       (app/about/page.tsx:66-68: "Projects", "Semesters", "Meetings"). */
-    label: "Members",
+    /* Counted off the BADGE, not off the roster. The tile is labelled
+       "Founding Members", so the thing it counts has to be founding badges —
+       otherwise the label and the number are free to drift apart, which is
+       exactly what the resolved NOTE(client) below was about.
+       It renders identically today: the club confirmed (Aug 2026) that all
+       12 members are founding and lib/content/members.ts badges every one of
+       them, so this is 12 either way. The difference is that it now stays
+       right on its own — the first non-founding member to join moves the
+       roster without moving this number, which is what the label promises. */
+    value: String(
+      members.filter((m) => m.badges.includes("founding")).length,
+    ),
+    /* client mockup, Aug 2026 — "FOUNDING MEMBERS". A NOTE(client) stood here
+       flagging the mockup's label as contradicting the data (only 7 of 12
+       members carried the 'founding' badge, so the tile would have disagreed
+       with the people cards on /about); the club resolved it by confirming
+       all 12, Aug 2026. */
+    label: "Founding Members",
     rule: "border-l border-line pr-5 pl-5",
   },
   {
@@ -122,10 +135,15 @@ export function StatsBand() {
       <dl className="mx-auto grid max-w-page grid-cols-2 gap-y-8 px-gutter py-10 lg:grid-cols-4 lg:py-12">
         {STATS.map((stat) => (
           /* dt before dd in the DOM; column-reverse puts the value on top
-             without reordering the pair for a screen reader. */
+             without reordering the pair for a screen reader.
+             justify-end pins the pair to the TOP of the stretched grid item:
+             a column-reverse box runs its main axis upward, so flex-end IS
+             the top edge. Without it the pair sits at the bottom, and in the
+             2x2 at 375px a row where one label wraps to two lines and the
+             other does not pushes the two values 16px out of line. */
           <div
             key={stat.label}
-            className={`flex flex-col-reverse gap-2 ${stat.rule}`}
+            className={`flex flex-col-reverse justify-end gap-2 ${stat.rule}`}
           >
             <MicroLabel as="dt">{stat.label}</MicroLabel>
             <dd>

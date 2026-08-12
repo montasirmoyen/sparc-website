@@ -150,7 +150,14 @@
 
 /* ─── Light ───────────────────────────────────────────────────── */
 
-:root {
+/* `.light` alongside :root makes light a FORCING class, not just the
+   default: a .light element inside a .dark page gets the light ramp,
+   because a custom property declared on a nearer element beats one
+   inherited from html. Needed by /preview's side-by-side theme columns,
+   and it makes next-themes' class="light" mean what it says. Zero effect
+   on normal pages, where :root already supplied these values. */
+:root,
+.light {
   --n-0: #f9f8f9;
   --n-1: #f4f3f3;
   --n-2: #edeaec;

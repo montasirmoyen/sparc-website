@@ -30,9 +30,11 @@
 // (10,20,30,40,50), then everyone else in the `team` array's own order
 // (100,110,…160).
 //
-// TODO(content): current-vs-alumni is undecided (orchestrator PLAN.md §5.1).
-// The deleted seed marked the four Class-of-2026 members alumni, but that was
-// inference, not data. Everyone ships 'current' until the club confirms.
+// status: club-supplied, confirmed Aug 2026 via the orchestrator (resolves
+// PLAN.md §5.1). The four Class-of-2026 members — Mohammed, Sarmad, Kyle and
+// Anthony — are alumni; everyone else is current. This is SOURCED DATA, not
+// inference from class years: a future member classed 2026 would NOT
+// automatically be alumni, so do not derive this field — read it.
 //
 // TODO(content): CollegiateX participants and participation years are unknown —
 // do not guess (SPEC "Content that does not exist yet"). `participated` is empty
@@ -135,7 +137,7 @@ export const members: Member[] = [
     nickname: null,
     photo: "/images/mo.webp",
     class_year: 2026,
-    status: "current",
+    status: "alumni",
     role: "President",
     role_term: "2025",
     role_history: [],
@@ -152,7 +154,7 @@ export const members: Member[] = [
     nickname: null,
     photo: "/images/sarmad.webp",
     class_year: 2026,
-    status: "current",
+    status: "alumni",
     role: "Vice-President",
     role_term: "2025",
     role_history: [],
@@ -169,7 +171,7 @@ export const members: Member[] = [
     nickname: null,
     photo: "/images/kyle.webp",
     class_year: 2026,
-    status: "current",
+    status: "alumni",
     role: "Treasurer",
     role_term: "2025",
     role_history: [],
@@ -220,7 +222,7 @@ export const members: Member[] = [
     nickname: null,
     photo: "/images/anthony.webp",
     class_year: 2026,
-    status: "current",
+    status: "alumni",
     role: "Founding Member",
     role_term: "2025",
     role_history: [],

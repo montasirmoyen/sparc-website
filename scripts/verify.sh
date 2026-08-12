@@ -43,6 +43,13 @@ MIGRATED=(
   lib/content/members.ts        # S2.5 — 12 people, verbatim from app/team
   lib/content/projects.ts       # S2.5 — 3 projects, verbatim from app/projects
   lib/content/events.ts         # S2.5 — 3 events + 3 recordings, verbatim
+  app/preview/page.tsx          # S7 — specimen catalogue, noindex
+  app/preview/preview-client.tsx # S7 — theme harness + measured contrast
+  app/preview/exhibits.tsx      # S7 — exhibits, demo data by predicate only
+  app/not-found.tsx             # S7 — 404, Martian only (no Ultra)
+  components/ui/sparc-mark.tsx  # S3 — inline mark; mask #fff/#000 are alpha, exempt
+  components/ui/navbar.tsx      # S3 — nav; [data-nav-mark] is S4's landing target
+  components/ui/footer.tsx      # S3 — footer; ink-fit wordmark + photo mask
 )
 
 # ─────────────────────────────────────────────────────────────────────────

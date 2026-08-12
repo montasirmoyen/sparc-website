@@ -16,8 +16,11 @@
  *    wrong default and is not — please do not "fix" it back. A micro-label
  *    carries content (dates, rooms, class years), so at 13px it is small
  *    text and owes 4.5:1. ink-faint maps to the same ramp step as
- *    line-strong and measures 4.3:1 on surface — fine for a hairline, short
- *    of the requirement for text. ink-muted measures 6.3:1. A genuinely
+ *    line-strong and measures 3.75:1 on light surface — fine for a 3.0:1
+ *    hairline, well short of the requirement for text. (TOKENS.md claims
+ *    4.3 for this pair; /preview measures the rendered value at 3.75, so
+ *    the argument here is stronger than the doc suggests.) ink-muted
+ *    measures 6.3:1. A genuinely
  *    decorative label can still opt down by passing text-ink-faint through
  *    className.
  */

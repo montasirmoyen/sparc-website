@@ -55,6 +55,14 @@ const WIDTH_NORMAL: React.CSSProperties = {
   fontVariationSettings: '"wdth" var(--wdth-normal)',
 };
 
+/* One span per letter so each can carry its own photo. Mapped from an array
+   rather than written out as five sibling tags: JSX would put a whitespace
+   text node between hand-written siblings, and a space inside the wordmark
+   would both widen it past the measured width and read as "S P A R C". The
+   paragraph's text content is still exactly "SPARC", so no aria is needed —
+   inline spans do not break the text run for a screen reader. */
+const WORDMARK = ["S", "P", "A", "R", "C"];
+
 /* The three things Tailwind cannot express, and nothing else.
  *
  * 1. --sparc-foot-h. One number drives the band. It is component layout, not
@@ -62,23 +70,58 @@ const WIDTH_NORMAL: React.CSSProperties = {
  *    Below ~112px the tagline starts crowding the wordmark and should move
  *    down to the strip; 120px is the tested default.
  *
- * 2. The photo mask. `background-clip: text` still wants the -webkit- prefix
- *    for older Safari, and the whole thing has to sit inside @supports so
- *    that the FAILURE MODE IS A SOLID ACCENT WORDMARK, never invisible text
- *    — which is why `color` is set to the accent on the base rule and only
- *    turned transparent inside the @supports block. background-color is
- *    repeated inside that block for the same reason one level down: it is
- *    clipped to the glyphs like every other background layer, so if the
- *    image 404s or does not cover the full text box, the uncovered letters
- *    render solid accent instead of nothing.
+ * 2. The photo mask — one photo per letter. `background-clip: text` still
+ *    wants the -webkit- prefix for older Safari, and the whole thing has to
+ *    sit inside @supports so that the FAILURE MODE IS A SOLID ACCENT
+ *    WORDMARK, never invisible text — which is why `color` is set to the
+ *    accent on the base rule and only turned transparent inside the
+ *    @supports block. background-color is repeated inside that block, on
+ *    every letter, for the same reason one level down: it is clipped to the
+ *    glyphs like every other background layer, so a letter whose photo 404s
+ *    or fails to cover its box renders solid accent instead of nothing.
  *
- *    The demo masked a PRE-CROPPED band of sparc-vc-4. The repo asset is the
- *    full square frame, so the crop is done here instead. Zoom 500% shows a
- *    20%-tall slice; measured, the wordmark box is 3.87:1, so a square frame
- *    scaled to 5x the box height stays wider than the text and the glyphs
- *    are never left uncovered. y 55% lands that slice on the row of people
- *    (they run from ~44% to ~72% of the frame) rather than on the ceiling.
- *    Retune with these three variables if the asset is ever re-cropped.
+ *    Why five photos. The old mask ran ONE frame of sparc-vc-4 across the
+ *    whole word at zoom 500%, and the slice that landed inside the glyphs was
+ *    mostly whiteboard, ceiling and a pale wall — near-white ink on a
+ *    near-white band. That is the "SPARC is hard to read" the club reported.
+ *    Splitting the word gives every letter a frame chosen for its own tonal
+ *    shape instead of one crop chosen for the average.
+ *
+ *    THE BLEND IS THE LEGIBILITY GUARANTEE, not a taste call. Each letter is
+ *    a photo over `background-color: var(--color-accent)` with
+ *    background-blend-mode: multiply on light, screen on dark. multiply can
+ *    only take a pixel DARKER than the accent; screen can only take it
+ *    LIGHTER. So on the near-white light band and the near-black dark band
+ *    alike, the photo can never push a letter toward the surface behind it,
+ *    and the worst case a letter can reach is exactly solid accent — the same
+ *    floor the @supports fallback lands on. luminosity was tried and
+ *    rejected: it passes photo lightness straight through, so a white wall or
+ *    a lit screen inside a glyph goes white and the letter opens up again,
+ *    which is the bug being fixed. That is also why the frames below are the
+ *    bright, evenly lit ones: under multiply only genuinely near-white pixels
+ *    stay accent-coloured, so a dim room (sparc-1, sparc-2) crushes the whole
+ *    letter to near-black and loses the accent family.
+ *
+ *      1 S  sparc-vc-1   a member's face, laptop screens and a red chair
+ *      2 P  sparc-vc-6   two members shoulder to shoulder, white wall behind
+ *      3 A  sparc-vc-11  whiteboard above two members at their laptops
+ *      4 R  sparc-vc-7   a member in profile, hands on the keyboard
+ *      5 C  sparc-vc-4   the whole club, back row above the monitors
+ *
+ *    RETUNING. Each letter has four variables and nothing else: -img -zoom
+ *    -x -y. -img is the frame, -zoom is background-size (100% = the frame
+ *    exactly as tall as the letter box; bigger crops in closer), and -x/-y
+ *    are background-position, which at these zooms sit roughly on the point
+ *    of the frame you want in the middle of the letter. Zoom is per letter
+ *    because the frames are not shot from the same distance. One rule when
+ *    changing -img or -zoom: keep
+ *
+ *      zoom x 1.283 x (frame width / frame height)  >=  the letter's advance
+ *
+ *    (advance in em: S .734, P .811, A .804, R .875, C .789; 1.283 is Ultra's
+ *    inline box height in em). Below that the scaled frame is narrower than
+ *    the glyph and the uncovered part falls back to flat accent. Every letter
+ *    below clears it with room to spare.
  *
  * 3. The pre-hydration font-size. 0.72 x the band height is what the
  *    measurement below resolves to at the default 120px, so the server paint
@@ -88,25 +131,108 @@ const WIDTH_NORMAL: React.CSSProperties = {
 const FOOTER_CSS = `
 .sparc-footer{
   --sparc-foot-h:120px;
-  --sparc-mask-zoom:500%;
-  --sparc-mask-x:50%;
-  --sparc-mask-y:55%;
+
+  /* ── Wordmark tuning. Four variables per letter, S P A R C in order; see
+        the RETUNING note above before changing -img or -zoom. ─────────── */
+  --sparc-mask-1-img:url("/images/sparc-vc-1.webp");
+  --sparc-mask-1-zoom:380%;
+  --sparc-mask-1-x:22%;
+  --sparc-mask-1-y:50%;
+
+  --sparc-mask-2-img:url("/images/sparc-vc-6.webp");
+  --sparc-mask-2-zoom:170%;
+  --sparc-mask-2-x:42%;
+  --sparc-mask-2-y:62%;
+
+  --sparc-mask-3-img:url("/images/sparc-vc-11.webp");
+  --sparc-mask-3-zoom:340%;
+  --sparc-mask-3-x:8%;
+  --sparc-mask-3-y:40%;
+
+  --sparc-mask-4-img:url("/images/sparc-vc-7.webp");
+  --sparc-mask-4-zoom:240%;
+  --sparc-mask-4-x:28%;
+  --sparc-mask-4-y:52%;
+
+  --sparc-mask-5-img:url("/images/sparc-vc-4.webp");
+  --sparc-mask-5-zoom:220%;
+  --sparc-mask-5-x:40%;
+  --sparc-mask-5-y:60%;
+
+  /* Photo over accent: darken-only on a light band. */
+  --sparc-mask-blend:multiply;
+}
+/* Lighten-only on a dark one — same guarantee, other direction. Mirrors the
+   dark variant globals.css declares, which covers .dim as well. */
+:where(.dark, .dim) .sparc-footer{
+  --sparc-mask-blend:screen;
+}
+/* .light is a FORCING class (globals.css), and that contract has to be
+   mirrored by component-local theme variables too: without this rule a
+   .light container nested inside a dark page inherits screen from the
+   rule above. Found by /preview's side-by-side theme columns — the exact
+   nesting the live site never produces but the specimen page always does. */
+:where(.light) .sparc-footer{
+  --sparc-mask-blend:multiply;
 }
 .sparc-footer-word{
   font-size:calc(var(--sparc-foot-h) * 0.72);
   color:var(--color-accent);
 }
+/* Ultra kerns P|A by -0.0391em, and the fit below clamps the wordmark against
+   a canvas measureText("SPARC") that includes that kern. Text shaping is not
+   guaranteed to cross element boundaries, so five spans can lose the pair and
+   render 0.039em WIDER than the number the clamp trusts — on a phone, where
+   the clamp is the only thing keeping the wordmark inside the band, that puts
+   the C under the overflow clip. So the kern is restored by hand here.
+
+   Measured, not assumed: Blink does shape across the boxes and re-applies the
+   pair itself when nothing separates the spans, but a margin suppresses that,
+   and this margin is exactly the value it would have applied — so the width
+   comes out the same either way (334.27px vs 334.23px for the old single text
+   node at the 120px default). The point of declaring it is that an engine
+   which does NOT shape across boxes lands on the same width instead of
+   overflowing, and the error can only ever run narrow, never wide.
+
+   Outside @supports on purpose: this is layout, not decoration, so the
+   fallback wordmark is the same width as the photo one. */
+.sparc-footer-word > span:nth-child(2){
+  margin-right:-0.0391em;
+}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .sparc-footer-word{
+  .sparc-footer-word > span{
     background-color:var(--color-accent);
-    background-image:url("/images/sparc-vc-4.webp");
-    background-size:auto var(--sparc-mask-zoom);
-    background-position:var(--sparc-mask-x) var(--sparc-mask-y);
     background-repeat:no-repeat;
+    background-blend-mode:var(--sparc-mask-blend);
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
     -webkit-text-fill-color:transparent;
+  }
+  .sparc-footer-word > span:nth-child(1){
+    background-image:var(--sparc-mask-1-img);
+    background-size:auto var(--sparc-mask-1-zoom);
+    background-position:var(--sparc-mask-1-x) var(--sparc-mask-1-y);
+  }
+  .sparc-footer-word > span:nth-child(2){
+    background-image:var(--sparc-mask-2-img);
+    background-size:auto var(--sparc-mask-2-zoom);
+    background-position:var(--sparc-mask-2-x) var(--sparc-mask-2-y);
+  }
+  .sparc-footer-word > span:nth-child(3){
+    background-image:var(--sparc-mask-3-img);
+    background-size:auto var(--sparc-mask-3-zoom);
+    background-position:var(--sparc-mask-3-x) var(--sparc-mask-3-y);
+  }
+  .sparc-footer-word > span:nth-child(4){
+    background-image:var(--sparc-mask-4-img);
+    background-size:auto var(--sparc-mask-4-zoom);
+    background-position:var(--sparc-mask-4-x) var(--sparc-mask-4-y);
+  }
+  .sparc-footer-word > span:nth-child(5){
+    background-image:var(--sparc-mask-5-img);
+    background-size:auto var(--sparc-mask-5-zoom);
+    background-position:var(--sparc-mask-5-x) var(--sparc-mask-5-y);
   }
 }
 `;
@@ -222,7 +348,9 @@ const Footer = () => {
                 ref={wordRef}
                 className="sparc-footer-word poster absolute left-0 top-0 whitespace-nowrap"
               >
-                SPARC
+                {WORDMARK.map((letter) => (
+                  <span key={letter}>{letter}</span>
+                ))}
               </p>
             </div>
             <MicroLabel

@@ -16,9 +16,8 @@
 // the schema's own example (`role_history text[] ... -- {'Founding Member'}`);
 // it is a standing status, not an office held in a particular year.
 //
-// badges: 'founding' is applied only where the repo role string literally reads
-// "Founding Member" — page.tsx lines 63, 71, 79, 87, 95, 104, 113 (Kanan,
-// Andrew, Margulan, Bexultan, Allan, Anthony, Yunus). Nobody else gets it.
+// badges: club-supplied, NOT derived from the repo — see the provenance note at
+// the bottom of this header.
 //
 // photo: same basename as the repo's `image` field, with the .webp re-exports
 // in public/images/ (e.g. /mo.jpeg → /images/mo.webp, /monty.png →
@@ -36,9 +35,19 @@
 // inference from class years: a future member classed 2026 would NOT
 // automatically be alumni, so do not derive this field — read it.
 //
-// TODO(content): CollegiateX participants and participation years are unknown —
-// do not guess (SPEC "Content that does not exist yet"). `participated` is empty
-// for everyone and no member carries a 'collegiatex' badge.
+// badges + participated: club-supplied, confirmed Aug 2026 via the orchestrator
+// (resolves the SPEC "Content that does not exist yet" item). Three facts:
+//   • all 12 members are founding members;
+//   • all 12 except Allan Nguyen did the CollegiateX internship;
+//   • all 12 participated in 2025 and 2026.
+//
+// 'founding' is now CLUB-SUPPLIED STATUS and is no longer derived from the repo
+// role strings. This matters, because for five people the two disagree: the repo
+// role for Mohammed, Sarmad, Kyle, Endi and Montasir reads President /
+// Vice-President / Treasurer / Secretary / Project Lead (Website), never
+// "Founding Member". They carry the badge on the club's word, not the repo's.
+// Do not "correct" this back to the repo strings, and do not re-derive the field
+// from `role` or `role_history` — read it.
 
 import type { Member } from "./types";
 
@@ -54,8 +63,8 @@ export const members: Member[] = [
     role: "President",
     role_term: "2026",
     role_history: ["Founding Member"],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/kananguliyev/",
     website: null,
@@ -71,8 +80,8 @@ export const members: Member[] = [
     role: "Vice-President & Project Lead",
     role_term: "2026",
     role_history: ["Project Lead (Website), 2025"],
-    badges: [],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hello, I'm a Computer Science student at Suffolk University and a Software Developer & Engineer, check out my blogs: montasirmoyen.com/blog",
     linkedin: "https://www.linkedin.com/in/montasirmoyen/",
     website: "https://montasirmoyen.com/",
@@ -88,8 +97,8 @@ export const members: Member[] = [
     role: "Treasurer",
     role_term: "2026",
     role_history: ["Founding Member"],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Aspiring software engineer focused on scalable architecture, clean code, and continuous technical growth.",
     linkedin: "https://www.linkedin.com/in/beksabila/",
     website: null,
@@ -105,8 +114,8 @@ export const members: Member[] = [
     role: "Secretary",
     role_term: "2026",
     role_history: ["Secretary, 2025"],
-    badges: [],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/endi-fejzollari-716aab181/",
     website: null,
@@ -122,8 +131,9 @@ export const members: Member[] = [
     role: "Social Media Manager",
     role_term: "2026",
     role_history: ["Founding Member"],
+    // the one member without the CollegiateX internship (club, Aug 2026)
     badges: ["founding"],
-    participated: [],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/allan-nguyen-b2236529b/",
     website: "https://www.allandng.com/",
@@ -141,8 +151,8 @@ export const members: Member[] = [
     role: "President",
     role_term: "2025",
     role_history: [],
-    badges: [],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey there, I'm an undergraduate researcher in Computer Science and Applied Math at Suffolk University, passionate about AI for health, scientific discovery, and public benefit.",
     linkedin: "https://www.linkedin.com/in/mohammed-al-tal/",
     website: "https://mohammedkhodoraltal.com/",
@@ -158,8 +168,8 @@ export const members: Member[] = [
     role: "Vice-President",
     role_term: "2025",
     role_history: [],
-    badges: [],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/sarmadshah03/",
     website: null,
@@ -175,8 +185,8 @@ export const members: Member[] = [
     role: "Treasurer",
     role_term: "2025",
     role_history: [],
-    badges: [],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hi, I'm a software developer studying Computer Science at Suffolk University in Boston, MA. I spend my days studying and developing software.",
     linkedin: "https://www.linkedin.com/in/kyleerhabor/",
     website: "https://kyleerhabor.com/",
@@ -192,8 +202,8 @@ export const members: Member[] = [
     role: "Founding Member",
     role_term: "2025",
     role_history: [],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/andrew-yuen-su/",
     website: null,
@@ -209,8 +219,8 @@ export const members: Member[] = [
     role: "Founding Member",
     role_term: "2025",
     role_history: [],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hi, I'm a software engineer studying Computer Science at Suffolk University. I am obsessed with building meaningful products that help people.",
     linkedin: "https://www.linkedin.com/in/margulan-kudaibergen/",
     website: null,
@@ -226,8 +236,8 @@ export const members: Member[] = [
     role: "Founding Member",
     role_term: "2025",
     role_history: [],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/anthony1sek/",
     website: null,
@@ -243,8 +253,8 @@ export const members: Member[] = [
     role: "Founding Member",
     role_term: "2025",
     role_history: [],
-    badges: ["founding"],
-    participated: [],
+    badges: ["founding", "collegiatex"],
+    participated: [2025, 2026],
     bio: "Hey, I'm a Computer Science Student at Suffolk University.",
     linkedin: "https://www.linkedin.com/in/yunus-abdurahman/",
     website: null,

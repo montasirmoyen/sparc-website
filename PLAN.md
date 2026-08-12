@@ -130,6 +130,16 @@ Verified in revision 2: the `Participated` lines and card-level `CollegiateX` pi
 
 **The reject rule stands and is unchanged:** build the badge *mechanism* from this file. The values remain unknown. Any P1 diff that emits a `CollegiateX` pill or a `Participated` line **on a person card** is an automatic reject.
 
+> **AMENDED after launch review (client, Aug 2026).** The unknown data was supplied:
+> all 12 members are founding members; all except Allan Nguyen did the CollegiateX
+> internship; everyone participated 2025 and 2026. `lib/content/members.ts` now
+> carries the values with that provenance. The reject rule above applied to
+> *hardcoding* the values — the card renders them from data, so no card code
+> changed when the data arrived, which was the point of the mechanism. Noted for
+> the record: `founding` on Mohammed/Sarmad/Kyle/Endi/Montasir rests on the
+> club's word alone; the repo's role strings never said it, and this is exactly
+> the badge shape the deleted seed was once burned for. The club is the source.
+
 ---
 
 ## 3. Corrected dependency graph

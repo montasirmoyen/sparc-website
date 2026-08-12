@@ -137,7 +137,18 @@ export default function AboutPage() {
         </PhotoReveal>
 
         <div className="mx-auto w-full max-w-page px-gutter">
-          <SurfaceCard className="-mt-10 flex flex-col gap-3 sm:-mt-16 sm:max-w-text lg:-mt-24">
+          {/* `relative` is load-bearing, not spacing. PhotoReveal always
+              carries an inline clip-path, and clip-path creates a stacking
+              context; a stacking context with z-index:auto paints in the
+              positioned layer, which is above in-flow static content. So a
+              STATIC card painted UNDER the photo where the negative margin
+              overlaps them — the heading and most of the first paragraph
+              disappeared behind the photo's bottom edge — no matter that it
+              comes later in the DOM. Positioning the card puts it in the same
+              layer, where DOM order decides and the card wins. This is
+              invisible in any environment that cannot composite frames, which
+              is how it shipped. */}
+          <SurfaceCard className="relative -mt-10 flex flex-col gap-3 sm:-mt-16 sm:max-w-text lg:-mt-24">
             <MicroLabel as="h2">{STORY_LABEL}</MicroLabel>
             {STORY.map((paragraph) => (
               <p key={paragraph.slice(0, 24)} className="text-sm text-ink-muted">

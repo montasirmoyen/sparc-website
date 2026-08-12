@@ -106,3 +106,23 @@ export type Recording = {
   link: string;
   description: string;
 };
+
+/**
+ * Like Recording, news has NO counterpart in schema.sql — there is no `news`
+ * table. It is a site-content list recovered from the pre-S4 home page, and it
+ * ships as its own module for the same reason the recordings do: the shape is
+ * real and in use, but nothing in the schema models it yet. If news later earns
+ * a table, this type is what that table should mirror.
+ */
+export type News = {
+  slug: string;
+  title: string;
+  /**
+   * A real Date, built local-midnight. The repo stored a display string
+   * ('Fri, 24 Apr 2026'); the weekday in each string was checked against the
+   * constructed date — see lib/content/news.ts.
+   */
+  date: Date;
+  /** '/images/sparc-vc-5.webp' */
+  image: string;
+};

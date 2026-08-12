@@ -61,6 +61,8 @@ MIGRATED=(
   app/projects/project-index.tsx # P3 — hover preview, one-at-a-time
   app/events/page.tsx           # P4 — record shell
   app/events/events-record.tsx  # P4 — rows + recordings; no card, no search
+  lib/content/news.ts           # U1 — 3 news items, verbatim from old home
+  app/home-sections.tsx         # U2 — stats band + news preview
 )
 
 # ─────────────────────────────────────────────────────────────────────────

@@ -14,10 +14,25 @@
  *
  * The photo set is the gallery array from the page this replaces, mapped
  * from the old public/*.jpeg to the migrated public/images/*.webp.
+ *
+ * WHAT CAME BACK, AND WHY IT IS NOT THE CAROUSEL. The client reviewed this
+ * page as empty and supplied two mockups (Aug 2026): a stats band and a news
+ * preview. Both live in ./home-sections.tsx and both are static server
+ * markup — see that file's header for the provenance of every string and for
+ * why three visible cards do not re-open SPEC's objection to the carousel.
+ *
+ * ORDER. Hero → StatsBand → PhotoDrift → NewsPreview. The band is a short,
+ * still, hairlined row, so it reads as the hero's footing rather than as a
+ * second screen; putting it before the drift also pushes the drift further
+ * down the page, which only strengthens the below-the-fold half of the
+ * "hero and drift never move at once" guarantee. Nothing here changes the
+ * drift's start conditions: it still waits on its own IntersectionObserver
+ * and on onHeroSettled().
  */
 
 import type { Metadata } from "next";
 
+import { NewsPreview, StatsBand } from "@/app/home-sections";
 import { Hero } from "@/components/ui/hero";
 import { PhotoDrift } from "@/components/ui/photo-drift";
 
@@ -62,7 +77,9 @@ export default function Home() {
        the viewport. */
     <main>
       <Hero />
+      <StatsBand />
       <PhotoDrift photos={GALLERY} />
+      <NewsPreview />
     </main>
   );
 }

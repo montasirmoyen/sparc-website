@@ -20,9 +20,14 @@
  *    hairline, well short of the requirement for text. (TOKENS.md claims
  *    4.3 for this pair; /preview measures the rendered value at 3.75, so
  *    the argument here is stronger than the doc suggests.) ink-muted
- *    measures 6.3:1. A genuinely
- *    decorative label can still opt down by passing text-ink-faint through
- *    className.
+ *    measures 6.3:1.
+ *    DO NOT pass a colour through className expecting it to win: cn() is a
+ *    plain join with no conflict resolution, and at equal specificity the
+ *    winner is stylesheet emission order — measured, .text-accent-text
+ *    emits BEFORE .text-ink-muted, so the override silently loses. To
+ *    recolour a label, put the colour class on a child element (declared
+ *    beats inherited regardless of order) — see the news date chip in
+ *    app/home-sections.tsx for the worked example.
  */
 
 import * as React from "react";

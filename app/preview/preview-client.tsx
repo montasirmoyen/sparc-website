@@ -19,15 +19,17 @@ import * as React from "react";
 import { MicroLabel } from "@/components/ui/micro-label";
 import { cn } from "@/lib/utils";
 import {
+  ButtonExhibit,
   ColourExhibit,
   CONTRAST_PAIRS,
   EventRowExhibit,
   FilterChipExhibit,
+  FooterExhibit,
   MicroLabelExhibit,
+  NavExhibit,
   PeopleCardExhibit,
   PillExhibit,
   ProjectRowExhibit,
-  StubSlot,
   THEMES,
   TypeScaleExhibit,
   type ThemeName,
@@ -89,18 +91,41 @@ function contrastRatio(
 /**
  * One exhibit row: the same content rendered three times, each inside a
  * forcing theme class with its own ground painted. `children` is a render
- * function so an exhibit that needs to know which column it is in (the
- * contrast table) can be told.
+ * function so an exhibit that needs to know which panel it is in (the contrast
+ * table) can be told.
+ *
+ * `layout` exists because of a trap worth stating plainly:
+ *
+ *   TAILWIND BREAKPOINTS ARE VIEWPORT-BASED, NOT CONTAINER-BASED.
+ *
+ * A component sitting in a 424px column at a 1440px viewport still fires every
+ * `sm:` / `lg:` / `xl:` rule it owns, as if it had the whole window. For most
+ * of the catalogue that is harmless — a card, a pill, a row all reflow into a
+ * narrow box. For the two full-bleed page-chrome components it is fatal, and
+ * it was measured here, not guessed:
+ *
+ *   nav     rendered its DESKTOP link row inside 396px — content 699px wide in
+ *           a 332px box, spilling into the clip.
+ *   footer  rendered its `xl:` single-row band, which drove the wordmark slot
+ *           to width 0, so the measured wordmark was clipped to nothing and
+ *           the per-letter mask — the thing the exhibit exists to show — was
+ *           not visible at all.
+ *
+ * So those two get `layout="stacked"`: three FULL-WIDTH panels, one per theme,
+ * one above the other. They still sit on three grounds and are still
+ * comparable on one screen; they just get the width their breakpoints assume.
  */
 function ExhibitRow({
   id,
   label,
   note,
+  layout = "columns",
   children,
 }: {
   id: string;
   label: string;
   note?: string;
+  layout?: "columns" | "stacked";
   children: (theme: ThemeName) => React.ReactNode;
 }) {
   return (
@@ -111,12 +136,17 @@ function ExhibitRow({
       {note ? (
         <p className="mt-1.5 max-w-text text-sm text-ink-muted">{note}</p>
       ) : null}
-      <div className="mt-3 grid gap-3 lg:grid-cols-3">
+      <div
+        className={cn(
+          "mt-3 gap-3",
+          layout === "columns" ? "grid lg:grid-cols-3" : "flex flex-col",
+        )}
+      >
         {THEMES.map((theme) => (
           <div
             key={theme}
             /* The theme class must sit on an element that also paints, or the
-               column inherits the page's ground and proves nothing. */
+               panel inherits the page's ground and proves nothing. */
             className={cn(
               theme,
               "rounded-card border border-line bg-surface p-3 text-ink",
@@ -178,6 +208,12 @@ export function PreviewClient() {
           predicate, so this page follows the real data. Contrast values are
           measured from the rendered swatches, not copied from a table.
         </p>
+        <p className="mt-3 max-w-text text-sm text-ink-muted">
+          What is not here: the home page&rsquo;s stats band and news preview.
+          Both are page compositions rather than system components, and the home
+          page is its own review surface — duplicating them here would give two
+          places to keep in step.
+        </p>
 
         <label className="mt-5 inline-flex items-center gap-2.5 rounded-control border border-line bg-surface-1 px-3 py-2">
           <input
@@ -200,29 +236,25 @@ export function PreviewClient() {
         <ExhibitRow
           id="nav"
           label="Nav"
-          note="Stubbed. S3 is rewriting the navbar; its exports are changing."
+          layout="stacked"
+          note="The real Navbar, full width — its breakpoints read the viewport, not the box, so in a narrow column it laid out its desktop link row at 699px inside 332px. Each mount is wrapped in an overflow-hidden box so its position:sticky has a scrollport that never scrolls, otherwise it would latch onto the page viewport and float over the exhibits. The theme control is live and drives the page chrome, not its own panel — the panel is pinned by its forcing class."
         >
-          {() => (
-            /* TODO(S7-rerun): mount the real <Navbar/> after S3 lands */
-            <StubSlot>Navbar — S3</StubSlot>
-          )}
+          {() => <NavExhibit />}
         </ExhibitRow>
 
         <ExhibitRow
           id="footer"
           label="Footer"
-          note="Stubbed. S3 is rewriting the footer; its exports are changing."
+          layout="stacked"
+          note="The real Footer, full width for the same reason: in a column its xl band rules still fired and squeezed the wordmark slot to zero, clipping the wordmark away entirely. It measures its own wordmark per instance, so these are three independent fits — which is how the per-letter photo mask gets checked on all three grounds at once (multiply on light, screen on dark, a floor of solid accent either way). The blend variable is component-local, and footer.tsx now mirrors the .light forcing-class contract itself, so each panel blends correctly whatever theme the page is in."
         >
-          {() => (
-            /* TODO(S7-rerun): mount the real <Footer/> after S3 lands */
-            <StubSlot>Footer — S3</StubSlot>
-          )}
+          {() => <FooterExhibit />}
         </ExhibitRow>
 
         <ExhibitRow
           id="people-card"
           label="People card"
-          note="Illustrative composition of SurfaceCard + Expand + Pill + MicroLabel. P1's PersonCard is the production implementation; this exhibit is replaced at the S7 re-run. Alumni state: desaturated photo, muted name, the word under the class line."
+          note="The production PersonCard. Both specimens mount collapsed and are interactive — the card owns its own open state and is not forked here to force one open. Alumni state: desaturated photo, muted name, the word under the class line."
         >
           {() => <PeopleCardExhibit />}
         </ExhibitRow>
@@ -254,12 +286,9 @@ export function PreviewClient() {
         <ExhibitRow
           id="buttons"
           label="Buttons"
-          note="Stubbed. No redesigned button primitive exists yet."
+          note="Still no Button primitive — these are page-level patterns, declared as a local const at each call site and cited under every specimen. Two treatments: the accent CTA at the three sizes it appears in, and the quiet link chip, which is two variants rather than the one string it is documented as."
         >
-          {() => (
-            /* TODO(S7-rerun): button styles land with the page tasks */
-            <StubSlot>Button — not yet built</StubSlot>
-          )}
+          {() => <ButtonExhibit />}
         </ExhibitRow>
 
         <ExhibitRow

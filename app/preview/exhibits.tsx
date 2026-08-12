@@ -2,10 +2,17 @@
 
 /* /preview — the exhibits.
  *
- * Specimen catalogue for the design system. Every exhibit here is built from
- * the S2 primitives in components/ui/ — nothing in this file re-implements a
- * card, a pill, a chip or (especially) an expand. If you find yourself adding
- * a second expand mechanism, stop: components/ui/expand.tsx is the only one.
+ * Specimen catalogue for the design system. Every exhibit here either MOUNTS
+ * the real component (Navbar, Footer, PersonCard) or is built from the S2
+ * primitives in components/ui/ — nothing in this file re-implements a card, a
+ * pill, a chip or (especially) an expand. If you find yourself adding a second
+ * expand mechanism, stop: components/ui/expand.tsx is the only one.
+ *
+ * The event and project rows are still local compositions, and deliberately:
+ * /events and /projects build their rows inside their own page modules
+ * (app/events/events-record.tsx, app/projects/project-index.tsx) rather than
+ * exporting a row component, so there is nothing to import. If a shared row
+ * primitive is ever extracted, these two exhibits mount it instead.
  *
  * CONTENT RULE. No name, date, role, term or count is typed into this file.
  * Every demo entry is selected from lib/content by PREDICATE (see the DEMO
@@ -19,11 +26,13 @@
  */
 
 import * as React from "react";
-import Image from "next/image";
 
 import { Expand, ExpandTrigger } from "@/components/ui/expand";
 import { FilterChip } from "@/components/ui/filter-chip";
+import { Footer } from "@/components/ui/footer";
 import { MicroLabel } from "@/components/ui/micro-label";
+import Navbar from "@/components/ui/navbar";
+import { PersonCard } from "@/components/ui/person-card";
 import { Pill } from "@/components/ui/pill";
 import { PosterText } from "@/components/ui/poster-text";
 import { SurfaceCard } from "@/components/ui/surface-card";
@@ -89,15 +98,6 @@ const DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
 
 /* ── shared bits ─────────────────────────────────────────────────────── */
 
-/** A labelled empty slot for a component that does not exist yet. */
-export function StubSlot({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="grid min-h-16 place-items-center rounded-card border border-dashed border-line-strong bg-surface-1 p-4 text-center">
-      <MicroLabel as="p">{children}</MicroLabel>
-    </div>
-  );
-}
-
 function ExhibitCaption({ children }: { children: React.ReactNode }) {
   return (
     <MicroLabel as="p" className="mt-3 mb-1.5 block first:mt-0">
@@ -106,124 +106,221 @@ function ExhibitCaption({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ── people card ─────────────────────────────────────────────────────── */
+/* ── nav ─────────────────────────────────────────────────────────────── */
 
-/* ILLUSTRATIVE COMPOSITION — NOT the production card.
+/* The real <Navbar/>. Two things about mounting it in a column:
  *
- * P1 owns the real PersonCard for /about. This exists so the card's *states*
- * (collapsed, expanded, current, alumni) can be reviewed against three grounds
- * before that page is written, and it is replaced wholesale at the S7 re-run.
- * It is assembled only from SurfaceCard + Expand + ExpandTrigger + Pill +
- * MicroLabel; the layout follows design/people-badges.html (photo, class line
- * with the + level to it, reserved name/role blocks, expand below).
- */
-function PersonCardExhibit({
-  member,
-  defaultOpen,
-}: {
-  member: Member;
-  defaultOpen: boolean;
-}) {
-  const [open, setOpen] = React.useState(defaultOpen);
-  const bodyId = React.useId();
-  const isAlumni = member.status === "alumni";
-
+ * STICKY NEUTRALISATION. Navbar's root is `sticky top-0 z-50`. A sticky
+ * element positions against its nearest ancestor SCROLL CONTAINER, and an
+ * element with a non-visible overflow is one — so wrapping the mount in
+ * `overflow-hidden` makes this box the scrollport. The box never scrolls, so
+ * the offset is permanently zero and the nav sits inert where it is drawn
+ * instead of latching onto the page viewport and floating over the exhibits
+ * below. Nothing about Navbar itself is changed or forked to achieve that.
+ *
+ * LANDMARKS. Navbar renders <header> and <nav aria-label="Main">. A <header>
+ * inside <main> is not a banner landmark, so the three mounts do not fight the
+ * real one in layout.tsx — but <nav> is a landmark wherever it sits, so this
+ * page does carry four "Main" navigations. Accepted: /preview is a noindexed
+ * internal instrument, and the alternative (aria-hidden over focusable
+ * controls) is a worse defect than the duplication.
+ *
+ * Same shape of thing, recorded rather than fixed: Navbar's mobile panel id is
+ * a module constant, so three mounts plus the layout's own put four
+ * id="nav-menu-panel" in the document and every MENU button's aria-controls
+ * resolves to the first. It only bites below lg, where the MENU button is not
+ * display:none — and it is the same trade the SparcMark ids already make by
+ * design (see the header of components/ui/sparc-mark.tsx). Nothing in this
+ * page's own code looks anything up by id; the contrast measurement scans
+ * [data-swatch] with querySelectorAll, so the duplicates cannot reach it.
+ *
+ * WIDTH. This one is mounted through ExhibitRow's `stacked` layout, full
+ * width, because Tailwind breakpoints read the VIEWPORT and not the box: in a
+ * 396px column at a 1440px viewport the nav still resolved its `lg:` desktop
+ * link row and laid out 699px of content in a 332px box. See the note on
+ * ExhibitRow in ./preview-client.
+ *
+ * Live, not a screenshot: the theme control inside each mount is the real
+ * ThemeToggle and drives the PAGE theme, not its own panel — the panel is
+ * pinned by its forcing class. That is the expected behaviour, not a bug. */
+export function NavExhibit() {
   return (
-    <SurfaceCard
-      as="article"
-      open={open}
-      padded={false}
-      className="overflow-hidden"
-    >
-      <div className="aspect-square overflow-hidden bg-surface-2">
-        {member.photo ? (
-          <Image
-            src={member.photo}
-            /* Decorative: the name sits right below it. */
-            alt=""
-            width={320}
-            height={320}
-            className={cn(
-              "h-full w-full object-cover",
-              /* Alumni state, per SPEC's card-state description. */
-              isAlumni && "saturate-[.25] contrast-[.95]",
-            )}
-          />
-        ) : null}
-      </div>
-
-      <div className="px-3.5 pt-3 pb-4">
-        <div className="flex items-start justify-between gap-2.5">
-          <MicroLabel as="p" className="mt-1 block min-w-0">
-            Class of {member.class_year}
-            {isAlumni ? <span className="block">Alumni</span> : null}
-          </MicroLabel>
-          <ExpandTrigger
-            open={open}
-            controls={bodyId}
-            onOpenChange={setOpen}
-            aria-label={`More about ${member.name}`}
-          />
-        </div>
-
-        <h3
-          className={cn(
-            "mt-1.5 text-lg font-medium [overflow-wrap:anywhere]",
-            isAlumni && "text-ink-muted",
-          )}
-        >
-          {member.name}
-          {member.nickname ? (
-            <span className="block text-sm font-normal">{member.nickname}</span>
-          ) : null}
-        </h3>
-
-        <p className="mt-1 text-sm [overflow-wrap:anywhere]">
-          {member.role}
-          {member.role_term ? (
-            <span className="whitespace-nowrap"> {member.role_term}</span>
-          ) : null}
-        </p>
-
-        <Expand open={open} id={bodyId}>
-          <div className="flex flex-col gap-2.5">
-            {member.role_history.length > 0 ? (
-              <MicroLabel as="p" className="block">
-                {member.role_history.join(" · ")}
-              </MicroLabel>
-            ) : null}
-            {member.bio ? (
-              <p className="text-sm text-ink-muted">{member.bio}</p>
-            ) : null}
-            {/* Renders straight off the array. An empty badges array renders
-                nothing — no placeholder badge is manufactured to fill it. */}
-            {member.badges.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5">
-                {member.badges.map((badge) => (
-                  <Pill key={badge} variant="filled" className="uppercase">
-                    {badge}
-                  </Pill>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </Expand>
-      </div>
-    </SurfaceCard>
+    <div className="relative overflow-hidden rounded-card border border-line">
+      <Navbar />
+    </div>
   );
 }
 
+/* ── footer ──────────────────────────────────────────────────────────── */
+
+/* The real <Footer/>. It is a client component that measures its own wordmark
+ * (canvas ink metrics + ResizeObserver), so three columns fit three times,
+ * independently — which is the point of the exhibit: the per-letter photo mask
+ * blends multiply on light and screen on dark, so the same five frames have to
+ * hold the accent on all three grounds, and here they can be compared at once.
+ *
+ * WIDTH — and this one is not cosmetic. Mounted full width via ExhibitRow's
+ * `stacked` layout. In a narrow column the band's `xl:` single-row rules still
+ * fired (breakpoints read the viewport, not the box), `flex-nowrap` crushed the
+ * lockup column, and the wordmark slot measured 0px wide — so the fitted
+ * wordmark, 334px of it, was clipped away to nothing by the slot's own
+ * overflow-hidden. The exhibit rendered a footer with no wordmark in it, which
+ * is precisely the thing it exists to show. Measured, not guessed.
+ *
+ * Each mount also emits its own copy of the footer's <style> block; the CSS is
+ * identical and scoped to .sparc-footer, so the copies are inert duplicates.
+ *
+ * RESOLVED DEFECT, found by this exhibit and fixed in footer.tsx — it
+ * declared
+ *
+ *     :where(.dark, .dim) .sparc-footer { --sparc-mask-blend: screen }
+ *
+ * with no `.light` counterpart. globals.css made `.light` a FORCING
+ * class so a light container inside a dark page gets the light ramp, but that
+ * only covers the variables globals declares — this one lives in footer.tsx,
+ * so the light panel below inherits `screen` from the page whenever the page
+ * itself is dark or dim. Measured: page=light gives multiply/screen/screen
+ * correctly; page=dark and page=dim give screen/screen/screen.
+ *
+ * The live site was never affected (the theme sits on <html>; no real footer
+ * is nested in a differently-themed box), but this page renders exactly that
+ * nesting, which is how it surfaced. The fix — a `.light` rule mirroring the
+ * dark one — landed in footer.tsx at integration; deliberately NOT patched
+ * here first, because a local override in /preview would have hidden the very
+ * class of bug this page exists to catch. All nine page-theme x panel-theme
+ * combinations now resolve the correct blend.
+ *
+ * A <footer> inside <main> is not a contentinfo landmark, so these three do not
+ * collide with the real one in layout.tsx. */
+export function FooterExhibit() {
+  return (
+    <div className="overflow-hidden rounded-card border border-line">
+      <Footer />
+    </div>
+  );
+}
+
+/* ── buttons ─────────────────────────────────────────────────────────── */
+
+/* There is still deliberately NO Button primitive. These are PAGE-LEVEL
+ * PATTERNS: two treatments that the pages converged on independently, each
+ * declared as a local const at its call site. This exhibit is where they get
+ * compared, and it is the evidence for promoting them to a primitive if a
+ * third treatment ever appears.
+ *
+ * Every class string below is copied verbatim from the cited file. Every label
+ * is a string the repo already ships. Specimens are <button type="button">
+ * rather than links: the treatment is what is under review, and a specimen
+ * that navigated away from /preview (or an <a> with no href, which is not
+ * focusable) would both be worse. The wired versions are at the call sites. */
+
+/* (a) The accent CTA. The treatment is constant — bg-accent + text-on-accent +
+   rounded-control + hover:bg-accent-hover — and only the size changes per call
+   site. hero's copy omits `duration-200 ease-out`, which is a no-op because
+   globals.css sets exactly those as the transition defaults; it is reproduced
+   as written rather than normalised. hero's leading `mt-6` is dropped: that is
+   layout at the call site, not part of the treatment. */
+const ACCENT_CTA = [
+  {
+    id: "sm · hero",
+    src: "components/ui/hero.tsx:573",
+    label: "Join Us",
+    cls: "inline-flex items-center gap-2 rounded-control bg-accent px-4 py-2.5 text-sm text-on-accent transition-colors hover:bg-accent-hover",
+  },
+  {
+    id: "md · about",
+    src: "app/about/page.tsx:178",
+    label: "Join Us",
+    cls: "rounded-control bg-accent px-6 py-3 text-on-accent transition-colors duration-200 ease-out hover:bg-accent-hover",
+  },
+  {
+    id: "lg · join",
+    src: "app/join/page.tsx:114",
+    label: "Join Discord",
+    cls: "inline-flex items-center gap-3 rounded-control bg-accent px-6 py-4 text-lg text-on-accent transition-colors duration-200 ease-out hover:bg-accent-hover",
+  },
+] as const;
+
+/* (b) The quiet link chip — the site's "this is a link, not a call to action"
+   control. It is NOT one byte-identical string across all five files: it is two
+   variants of one treatment. The border/ground/size/hover half is identical in
+   both; they differ only in display box and padding, and each file's comment
+   cites app/not-found.tsx:43 as the origin. Worth a look side by side — if the
+   two are meant to be one control, this is the divergence to close. */
+const QUIET_LINK = [
+  {
+    id: "inline-block · px-3 py-2",
+    src: "app/not-found.tsx:43 · app/events/events-record.tsx:60 · app/projects/project-index.tsx:94",
+    label: "View Project",
+    cls: "inline-block rounded-control border border-line bg-surface-1 px-3 py-2 text-sm text-ink transition-colors duration-200 ease-out hover:border-line-strong",
+  },
+  {
+    id: "inline-flex · px-4 py-2.5",
+    src: "app/join/page.tsx:71 · app/home-sections.tsx:38",
+    label: "All events",
+    cls: "inline-flex items-center gap-2 rounded-control border border-line bg-surface-1 px-4 py-2.5 text-sm text-ink transition-colors duration-200 ease-out hover:border-line-strong",
+  },
+] as const;
+
+export function ButtonExhibit() {
+  return (
+    <div>
+      <ExhibitCaption>accent CTA · no primitive, three sizes</ExhibitCaption>
+      <div className="flex flex-col items-start gap-2">
+        {ACCENT_CTA.map((cta) => (
+          <div key={cta.id} className="flex flex-col items-start gap-1">
+            <button type="button" className={cta.cls}>
+              {cta.label}
+            </button>
+            <MicroLabel as="p" className="block">
+              {cta.id}
+            </MicroLabel>
+          </div>
+        ))}
+      </div>
+
+      <ExhibitCaption>quiet link chip · two variants of one treatment</ExhibitCaption>
+      <div className="flex flex-col items-start gap-2">
+        {QUIET_LINK.map((link) => (
+          <div key={link.id} className="flex flex-col items-start gap-1">
+            <button type="button" className={link.cls}>
+              {link.label}
+            </button>
+            <MicroLabel as="p" className="block">
+              {link.id}
+            </MicroLabel>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── people card ─────────────────────────────────────────────────────── */
+
+/* The PRODUCTION card — components/ui/person-card.tsx. The illustrative
+ * composition that stood here through the first pass is gone, as its own
+ * comment said it would be; there is one PersonCard and this exhibit shows it.
+ *
+ * PersonCard renders `as="li"` and owns its own `open` state (no open prop),
+ * so the four states are reached by USING it rather than by forcing them:
+ * both specimens mount collapsed and the + expands them in place. Forking the
+ * component to pin one open would mean maintaining a second card, which is the
+ * thing this section exists to prevent.
+ *
+ * Selection is still by predicate — a current member with role history (so the
+ * "Previously" line has something to render) and an alumni (desaturated photo,
+ * muted name, "Alumni" under the class line). */
 export function PeopleCardExhibit() {
   return (
     <div>
-      <ExhibitCaption>current · collapsed</ExhibitCaption>
-      <PersonCardExhibit member={DEMO_CURRENT} defaultOpen={false} />
-      <ExhibitCaption>current · expanded</ExhibitCaption>
-      <PersonCardExhibit member={DEMO_CURRENT} defaultOpen />
-      <ExhibitCaption>alumni · collapsed</ExhibitCaption>
-      <PersonCardExhibit member={DEMO_ALUMNI} defaultOpen={false} />
-      <ExhibitCaption>alumni · expanded</ExhibitCaption>
-      <PersonCardExhibit member={DEMO_ALUMNI} defaultOpen />
+      <ExhibitCaption>
+        current + alumni · both start collapsed, press + to expand
+      </ExhibitCaption>
+      <ul className="flex flex-col gap-3">
+        <PersonCard member={DEMO_CURRENT} />
+        <PersonCard member={DEMO_ALUMNI} />
+      </ul>
     </div>
   );
 }
@@ -624,10 +721,18 @@ export function ColourExhibit({
               <span className="flex-none text-sm tabular-nums">
                 {measured ? ratio.toFixed(1) : "—"}
               </span>
-              <MicroLabel
-                className={cn("flex-none", measured && !passes && "text-accent-text")}
-              >
-                {measured ? (passes ? "pass" : "fail") : ""}
+              {/* The tint goes on a CHILD, not through MicroLabel's className.
+                  cn() is a plain join and at equal specificity the winner is
+                  stylesheet emission order — .text-accent-text emits before
+                  .text-ink-muted, so an override passed in would silently lose.
+                  Declared-on-the-child beats inherited regardless of order.
+                  See the header of components/ui/micro-label.tsx. */}
+              <MicroLabel className="flex-none">
+                {measured ? (
+                  <span className={passes ? undefined : "text-accent-text"}>
+                    {passes ? "pass" : "fail"}
+                  </span>
+                ) : null}
               </MicroLabel>
             </div>
           );

@@ -21,13 +21,14 @@
  * markup — see that file's header for the provenance of every string and for
  * why three visible cards do not re-open SPEC's objection to the carousel.
  *
- * ORDER. Hero → StatsBand → PhotoDrift → NewsPreview. The band is a short,
- * still, hairlined row, so it reads as the hero's footing rather than as a
- * second screen; putting it before the drift also pushes the drift further
- * down the page, which only strengthens the below-the-fold half of the
- * "hero and drift never move at once" guarantee. Nothing here changes the
- * drift's start conditions: it still waits on its own IntersectionObserver
- * and on onHeroSettled().
+ * ORDER. Hero → PhotoDrift → StatsBand → NewsPreview. Client request
+ * (Aug 2026): the photos sit directly under the hero, and the stats band —
+ * a short, still, hairlined row — becomes the divider between the photo row
+ * and the news. The drift is therefore one section closer to the fold than
+ * it was, but that does not weaken the "hero and drift never move at once"
+ * guarantee: its start is still gated on its own IntersectionObserver AND
+ * on onHeroSettled(), so it cannot begin while the hero is still settling
+ * no matter how early it enters the viewport.
  */
 
 import type { Metadata } from "next";
@@ -77,8 +78,8 @@ export default function Home() {
        the viewport. */
     <main>
       <Hero />
-      <StatsBand />
       <PhotoDrift photos={GALLERY} />
+      <StatsBand />
       <NewsPreview />
     </main>
   );

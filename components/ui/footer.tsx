@@ -420,6 +420,15 @@ const Footer = () => {
           <p className="w-full text-label text-ink-muted" style={WIDTH_NORMAL}>
             {`© ${new Date().getFullYear()} SPARC. All rights reserved.`}
           </p>
+          {/* "Designed by Allan Nguyen" — client instruction, Aug 2026,
+              verbatim. Plain text, not a link: the client asked for the
+              credit, not for a destination. If the club ever wants it
+              linked, the URL is already in the repo —
+              lib/content/members.ts:139, https://www.allandng.com/. Same
+              classes as the © line above so the two read as one block. */}
+          <p className="w-full text-label text-ink-muted" style={WIDTH_NORMAL}>
+            Designed by Allan Nguyen
+          </p>
         </div>
       </div>
     </footer>

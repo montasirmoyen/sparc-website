@@ -47,6 +47,41 @@
  * `onPointerLeave` lives on the <ol>, not on each row, so crossing a hairline
  * never fires it and the frame stays put while the cover swaps underneath.
  *
+ * ── the frame follows the row ────────────────────────────────────────────
+ *
+ * client, Aug 2026 — the frame used to be a `sticky top-24` child of the
+ * layer, which meant that at the top of the page it painted beside row 1 no
+ * matter which row was hovered: hover row 3, the picture appears three rows
+ * up. It read as broken. The frame now sits at top 0 of the layer and is
+ * pushed down to the active row with translate3d.
+ *
+ * The y comes from the row itself. Every <li> hands its element to `rows`, a
+ * ref map keyed by accession ref; `measure` reads `element.offsetTop`, which
+ * is already the number wanted — the <ol> is static, so a row's offsetParent
+ * is the `relative` wrapper at the bottom of this file, and the layer is
+ * `inset-y-0` inside that same wrapper. One coordinate space, no getBounding
+ * arithmetic, no observers, no scroll listener.
+ *
+ * It is read at EVENT TIME, never cached at mount: a row that has been
+ * expanded is taller, so every row under it has moved. Resize re-reads it too
+ * — that is the only thing that shifts a row without a pointer or focus event
+ * passing through `show`. The y is clamped to `layer height − frame height`
+ * so a row near the end of the list cannot push the frame past the bottom of
+ * the list.
+ *
+ * The translate rides the SAME 200ms/--ease-out transition as the fade, so
+ * row-to-row now travels the frame to the row while the cover hard-cuts under
+ * it — "the image comes to the row I am on". Leaving the list fades the frame
+ * out where it stands and the y is deliberately LEFT THERE: resetting it
+ * would either race the fade (a visible slide-away) or need a timer to wait
+ * the fade out. The next `show` sets both at once, and the frame is invisible
+ * in between, so a stale y is never seen.
+ *
+ * Because `transform` is what carries the follow, the entrance offset stays
+ * on the Tailwind classes, which compile to the independent `translate` and
+ * `scale` properties in v4 and compose with `transform` rather than fight it.
+ * Still exactly two animated properties on this element.
+ *
  * ── capability gate ──────────────────────────────────────────────────────
  *
  * The whole preview layer is gated on `(hover: hover) and (pointer: fine)`,
@@ -68,6 +103,10 @@
  * classes are both dropped, so the frame is either present or absent. The
  * universal block in globals.css would already flatten the duration; this
  * removes the transform too, so nothing travels even one frame.
+ *
+ * The follow is unaffected — it is POSITION, not motion. With no transition
+ * class the translate3d is simply where the frame is, so it appears already
+ * beside the hovered row instead of sliding to it.
  */
 
 import * as React from "react";
@@ -77,12 +116,6 @@ import { Expand, ExpandIcon } from "@/components/ui/expand";
 import { MicroLabel } from "@/components/ui/micro-label";
 import type { Project } from "@/lib/content/types";
 import { cn } from "@/lib/utils";
-
-/* The superscript is the YEAR, per SPEC ("the year as a superscript"), and it
-   is read out of `term` — never stored twice and never typed here. The full
-   term keeps its own place in the micro-label. If a term ever arrives without
-   a four-digit year the superscript is dropped rather than guessed. */
-const YEAR = /\b(\d{4})\b/;
 
 /* The one link treatment on this page. Same class string as the /events rows
    (app/events/events-record.tsx:59-60) and the 404's route links
@@ -102,10 +135,16 @@ const LINK_CLASS =
 function ProjectRow({
   project,
   onShow,
+  registerRow,
 }: {
   project: Project;
   /** Reports "this row wants the preview" up to the single `active` owner. */
   onShow: (ref: string) => void;
+  /**
+   * Hands this row's <li> to the parent's ref map. The parent reads its
+   * offsetTop to place the preview frame; the row itself measures nothing.
+   */
+  registerRow: (ref: string, element: HTMLLIElement | null) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const bodyId = React.useId();
@@ -113,7 +152,6 @@ function ProjectRow({
   /* repo first, live second — SP-001 is a repo, SP-002/003 are live sites. A
      project carrying neither renders its body without a link. */
   const href = project.repo_url ?? project.live_url;
-  const year = project.term.match(YEAR)?.[1] ?? null;
 
   /* Focus parity: a keyboard user gets the same preview a mouse user gets, so
      the image is not hover-only information. Restricted to :focus-visible so a
@@ -125,6 +163,11 @@ function ProjectRow({
 
   return (
     <li
+      /* Braces, not a concise body: a ref callback must return a cleanup
+         function or nothing, and registerRow returns void either way. */
+      ref={(element) => {
+        registerRow(project.ref, element);
+      }}
       className="border-t border-line last:border-b"
       onPointerEnter={() => onShow(project.ref)}
     >
@@ -167,19 +210,15 @@ function ProjectRow({
                  the title, exactly as the stretched link used to. */
               className="flex w-full items-start justify-between gap-4 text-left after:absolute after:inset-0 after:content-[''] hover:text-accent-text focus-visible:text-accent-text"
             >
-              <span>
-                {project.title}
-                {year && (
-                  <>
-                    {" "}
-                    {/* top-0 cancels Preflight's sup offset so the year sits
-                        against the cap line rather than floating mid-word. */}
-                    <sup className="top-0 align-top text-label text-ink-muted">
-                      {year}
-                    </sup>
-                  </>
-                )}
-              </span>
+              {/* SPEC amendment — client, Aug 2026: the superscript
+                  duplicated the accession line's year and was removed; the
+                  term line is the single source. SPEC asked for both "the year
+                  as a superscript" here AND "accession IDs plus semester" in
+                  the micro-label above, which printed 2025 twice on every row.
+                  The micro-label wins: "SP-001 · SPRING 2025" carries the
+                  semester as well as the year, so it is strictly the more
+                  informative of the two. */}
+              <span>{project.title}</span>
               {/* The affordance. Inside the button so it inherits the hover /
                   focus-visible colour and needs no group plumbing; aria-hidden,
                   so the accessible name is the title line itself. The top
@@ -262,10 +301,63 @@ export function ProjectIndex({ projects }: { projects: Project[] }) {
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [active, setActive] = React.useState<string | null>(null);
 
-  /* No layer, no state changes. */
+  /* Where the frame sits, in px down from the top of the layer. Derived from
+     `active` and written in the same handler — it says WHERE, never WHICH, so
+     `active` is still the only place a ref is recorded and still the only
+     thing enforcing one preview at a time. */
+  const [offset, setOffset] = React.useState(0);
+
+  /* Keyed by accession ref, filled by each row's ref callback. */
+  const rows = React.useRef(new Map<string, HTMLLIElement>());
+  const layerRef = React.useRef<HTMLDivElement>(null);
+  const frameRef = React.useRef<HTMLDivElement>(null);
+
+  const registerRow = React.useCallback(
+    (ref: string, element: HTMLLIElement | null) => {
+      if (element) rows.current.set(ref, element);
+      else rows.current.delete(ref);
+    },
+    [],
+  );
+
+  /* One layout read, at event time. `offsetTop` is measured against the
+     `relative` wrapper below — the <ol> in between is static, so it is that
+     wrapper that is every row's offsetParent, and the layer is inset-y-0
+     inside it, so the row's offsetTop IS the frame's y with no conversion.
+     The clamp keeps the frame's bottom inside the list: without it the last
+     row would hang the frame off the end of the index. */
+  const measure = React.useCallback((ref: string) => {
+    const row = rows.current.get(ref);
+    const layer = layerRef.current;
+    const frame = frameRef.current;
+    if (!row || !layer || !frame) return 0;
+
+    const limit = Math.max(0, layer.offsetHeight - frame.offsetHeight);
+    return Math.min(row.offsetTop, limit);
+  }, []);
+
+  /* No layer, no state changes. Reading the position here rather than in an
+     effect is deliberate: a row that has been expanded is taller and has
+     pushed every row below it down, so the y has to be taken at the moment
+     the row asks for the preview, not at mount. */
   const show = (ref: string) => {
-    if (canHover) setActive(ref);
+    if (canHover) {
+      setActive(ref);
+      setOffset(measure(ref));
+    }
   };
+
+  /* Resize is the one thing that moves rows without a pointer or focus event
+     passing through `show`, so the row that is currently up re-reads itself.
+     (An expand while that same row is up does not move its top, only the tops
+     of the rows beneath it, which re-measure on their own next hover.) */
+  React.useEffect(() => {
+    if (!active) return;
+
+    const remeasure = () => setOffset(measure(active));
+    window.addEventListener("resize", remeasure);
+    return () => window.removeEventListener("resize", remeasure);
+  }, [active, measure]);
 
   /* Both clears live on the list, not on the row. Pointer: crossing from one
      row to the next never leaves the <ol>. Focus: React's onBlur is focusout
@@ -281,51 +373,64 @@ export function ProjectIndex({ projects }: { projects: Project[] }) {
     <div className="relative">
       <ol onPointerLeave={() => setActive(null)} onBlur={clearOnListBlur}>
         {projects.map((project) => (
-          <ProjectRow key={project.ref} project={project} onShow={show} />
+          <ProjectRow
+            key={project.ref}
+            project={project}
+            onShow={show}
+            registerRow={registerRow}
+          />
         ))}
       </ol>
 
       {canHover && (
         <div
+          ref={layerRef}
           aria-hidden="true"
           className="pointer-events-none absolute inset-y-0 right-0 hidden w-[20rem] lg:block"
         >
-          {/* Sticky inside a full-height absolute layer: the preview follows
-              the reader down a long list without any scroll listener. top-24
-              clears the sticky h-16 navbar. */}
-          <div className="sticky top-24">
-            <div
-              className={cn(
-                "relative aspect-[16/10] overflow-hidden rounded-card border border-line bg-surface-2",
-                /* The only properties that change on this element are opacity
-                   and transform; both are compositor-only. */
-                !reduced && "transition duration-200 ease-out",
-                active ? "opacity-100" : "opacity-0",
-                !reduced &&
-                  (active
-                    ? "translate-y-0 scale-100"
-                    : "translate-y-2 scale-[0.98]"),
-              )}
-            >
-              {projects.map(
-                (project) =>
-                  project.cover && (
-                    <Image
-                      key={project.ref}
-                      src={project.cover}
-                      /* Decorative: the layer is aria-hidden and every fact in
-                         it is already on the row. */
-                      alt=""
-                      fill
-                      sizes="320px"
-                      className={cn(
-                        "object-cover",
-                        active === project.ref ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                  ),
-              )}
-            </div>
+          {/* The frame hangs from the TOP of the layer and is pushed down to
+              the active row. Nothing here is sticky any more: the reader's
+              eye is on the row it is hovering, and that is where the picture
+              has to be. */}
+          <div
+            ref={frameRef}
+            /* The follow. Inline because it is a measured pixel value, and it
+               composes rather than collides: Tailwind v4 compiles translate-*
+               and scale-* to the independent `translate` and `scale`
+               properties, so the entrance offset below keeps its tokens and
+               this only carries the y. `transition` covers `transform`, so it
+               rides the same 200ms / --ease-out as everything else. */
+            style={{ transform: `translate3d(0, ${offset}px, 0)` }}
+            className={cn(
+              "absolute inset-x-0 top-0 aspect-[16/10] overflow-hidden rounded-card border border-line bg-surface-2",
+              /* The only properties that change on this element are opacity
+                 and transform; both are compositor-only. */
+              !reduced && "transition duration-200 ease-out",
+              active ? "opacity-100" : "opacity-0",
+              !reduced &&
+                (active
+                  ? "translate-y-0 scale-100"
+                  : "translate-y-2 scale-[0.98]"),
+            )}
+          >
+            {projects.map(
+              (project) =>
+                project.cover && (
+                  <Image
+                    key={project.ref}
+                    src={project.cover}
+                    /* Decorative: the layer is aria-hidden and every fact in
+                       it is already on the row. */
+                    alt=""
+                    fill
+                    sizes="320px"
+                    className={cn(
+                      "object-cover",
+                      active === project.ref ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                ),
+            )}
           </div>
         </div>
       )}

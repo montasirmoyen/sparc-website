@@ -33,6 +33,16 @@ MIGRATED=(
   app/layout.tsx                # S1 — fonts, skip-link, metadata base
   components/theme-provider.tsx # S1 — verified clean, unchanged
   components/theme-toggle.tsx   # S1 — de-hexed, migrated to semantic names
+  components/ui/expand.tsx      # S2 — THE expand; a second one anywhere is a bug
+  components/ui/pill.tsx        # S2 — badge pill, wrap rules baked in
+  components/ui/filter-chip.tsx # S2 — aria-pressed filter toggle
+  components/ui/surface-card.tsx # S2 — redesign card (legacy card.tsx still live)
+  components/ui/micro-label.tsx # S2 — 13px labels; muted default is deliberate
+  components/ui/poster-text.tsx # S2 — the only way to render the poster face
+  lib/content/types.ts          # S2.5 — shapes mirror supabase/schema.sql
+  lib/content/members.ts        # S2.5 — 12 people, verbatim from app/team
+  lib/content/projects.ts       # S2.5 — 3 projects, verbatim from app/projects
+  lib/content/events.ts         # S2.5 — 3 events + 3 recordings, verbatim
 )
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -160,7 +170,10 @@ echo "── motion ────────────────────
 animated=0; guarded=0
 for f in "${scope[@]}"; do
   case "$f" in *.tsx|*.ts|*.css) ;; *) continue ;; esac
-  SEARCH '(motion\.|useAnimate|useScroll|useSpring|framer-motion|from "motion|requestAnimationFrame|animation-timeline|\.animate\(|@keyframes)' \
+  # motion\.[a-z] not motion\. — the bare form matched the word "motion."
+  # in an English comment ("no state, no motion.") and flagged a file with
+  # no animation at all. The JSX form is always motion.div / motion.span.
+  SEARCH '(motion\.[a-z]|useAnimate|useScroll|useSpring|framer-motion|from "motion|requestAnimationFrame|animation-timeline|\.animate\(|@keyframes)' \
     "$f" >/dev/null 2>&1 || continue
   animated=$((animated + 1))
   if SEARCH '(prefers-reduced-motion|useReducedMotion|motion-reduce)' \

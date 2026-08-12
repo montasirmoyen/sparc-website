@@ -50,6 +50,17 @@ MIGRATED=(
   components/ui/sparc-mark.tsx  # S3 — inline mark; mask #fff/#000 are alpha, exempt
   components/ui/navbar.tsx      # S3 — nav; [data-nav-mark] is S4's landing target
   components/ui/footer.tsx      # S3 — footer; ink-fit wordmark + photo mask
+  app/page.tsx                  # S4 — home shell
+  components/ui/hero.tsx        # S4 — orbit draw + scroll-linked bolt travel
+  components/ui/photo-drift.tsx # S4 — entrance into drift; card vs track handoff
+  app/about/page.tsx            # P1 — merged about+team
+  app/about/sections.tsx        # P1 — photo reveal + people directory
+  components/ui/person-card.tsx # P1 — reserved name/role heights live here
+  app/join/page.tsx             # P2 — merged join+contact; form kept, subordinate
+  app/projects/page.tsx         # P3 — type list shell
+  app/projects/project-index.tsx # P3 — hover preview, one-at-a-time
+  app/events/page.tsx           # P4 — record shell
+  app/events/events-record.tsx  # P4 — rows + recordings; no card, no search
 )
 
 # ─────────────────────────────────────────────────────────────────────────

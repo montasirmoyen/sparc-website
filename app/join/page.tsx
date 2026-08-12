@@ -163,8 +163,13 @@ export default function JoinPage() {
         </p>
 
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {/* TODO(content): president's email for the sponsor route — using
-              the club address until supplied. */}
+          {/* Sponsor / partner routes to the club address by decision, not by
+              default: the client confirmed (Aug 2026) that
+              sparc@studentorgs.suffolk.edu IS the sponsor/partner contact.
+              This is no longer a placeholder. If a president's address is ever
+              supplied it is a one-string swap — CLUB_EMAIL above is shared
+              with the Press route, so give the sponsor route its own constant
+              rather than editing that one. */}
           <SurfaceCard as="li" className="lift flex flex-col gap-3">
             <h3 className="text-base font-medium">Sponsor / partner</h3>
             <p className="flex-1 text-sm text-ink-muted">{CLUB_EMAIL}</p>

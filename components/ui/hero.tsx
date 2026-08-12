@@ -127,6 +127,32 @@ const HERO_CSS = `
      it lands in it. Sticky with z-index makes a stacking context, and this
      one sorts above the header. */
   z-index:60;
+  /* Painting above the nav must not mean eating its clicks.
+     The stage is a transparent, full-width sheet over the whole first
+     screen, and hit-testing follows paint order — so at z-60 it took the
+     mousedown for anything the nav hangs into that screen. The theme
+     panel is exactly that: absolutely positioned under the header row at
+     z-50, so its options were unreachable and the toggle's own
+     outside-click handler read the swallowed mousedown as "outside" and
+     closed it. Measured: 0/21 theme switches at scroll 0 on home, 21/21
+     on every other page. Reduced motion included — this block is static.
+     Found through the theme toggle, but it applied to anything the first
+     viewport covers, so the fix is at the stage, not at that control. */
+  pointer-events:none;
+}
+/* ...and given back to the one thing in here anyone clicks or reads. It
+   holds the kicker, wordmark, tagline and CTA, and nothing of the nav's
+   ever reaches this far down the screen, so restoring the whole box keeps
+   the copy selectable instead of only the link clickable. The traveller
+   deliberately does NOT get it back: it is decorative, and it ends the
+   travel sitting exactly on top of the nav's real home link. */
+.sparc-hero-copy{
+  pointer-events:auto;
+}
+/* Faded out is not interactive. After the first scroll the copy is at
+   opacity 0, and opacity 0 still hit-tests. */
+.sparc-hero-copy[data-gone]{
+  pointer-events:none;
 }
 .sparc-hero-mark{
   transform-origin:50% 50%;
@@ -549,7 +575,7 @@ animation-range:${startsAt.toFixed(2)}px ${(startsAt + m.travel).toFixed(2)}px;
 
           <div
             ref={copyRef}
-            className="max-w-text transition-opacity duration-150 ease-out data-[gone]:opacity-0"
+            className="sparc-hero-copy max-w-text transition-opacity duration-150 ease-out data-[gone]:opacity-0"
           >
             <MicroLabel as="p" className="block">
               Suffolk University · Student Club

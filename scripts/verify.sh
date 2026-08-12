@@ -103,12 +103,12 @@ echo "── style ────────────────────�
 
 # No raw colour outside the token layer. globals.css is the token layer and
 # is the one file allowed to hold hex.
-nonculture=()
+nontoken=()
 for p in "${scope[@]}"; do
-  case "$p" in */globals.css) ;; *) nonculture+=("$p") ;; esac
+  case "$p" in */globals.css) ;; *) nontoken+=("$p") ;; esac
 done
-if [ "${#nonculture[@]}" -gt 0 ]; then
-  reject '#[0-9a-fA-F]{6}' 'no hex literals' "${nonculture[@]}"
+if [ "${#nontoken[@]}" -gt 0 ]; then
+  reject '#[0-9a-fA-F]{6}' 'no hex literals' "${nontoken[@]}"
 else
   info 'no non-token files in scope yet'
 fi
